@@ -3,6 +3,12 @@ function addOption(option) {
     const optionElement = document.createElement('option');
     optionElement.value = option;
     optionElement.textContent = option;
+
+
+
+
+
+    
     selectElement.appendChild(optionElement);
   }
   
