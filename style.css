@@ -1,0 +1,528 @@
+*{
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+}
+html{
+    font-family: 'Lato', sans-serif;
+    font-size: 20px;
+    color: #5a5a5a;
+    background-color: rgb(255, 255, 255);
+    text-rendering: optimizeLegibility;
+    /* mac dinh la 16px */
+}
+
+body{
+    /* background-image:  url("../Tuan2/img/layer2.png"); */
+    margin-left: 1%;
+    margin-right: 1%;
+    margin-top: 2%;
+    background-size: cover;
+    background-position: center;
+    overflow-y: auto;
+    height: 95vh;
+    /* view height */
+    max-width: 95%;
+    background-attachment: fixed;
+    background-color: rgb(255, 255, 255);
+    box-sizing: border-box;
+    flex-direction: column;
+}
+
+
+/* ============================================
+*==================HEADER======================
+=============================================== */
+header {
+    max-width: 100%;
+    height: 10%;
+    /* background-color: bisque; */
+    font-size: 30px;
+    color:gray;
+    display: flex;
+    flex-direction: row wrap;
+    border: rgb(208, 204, 204) solid ;
+}
+
+.name-header h1{
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5em;
+    width: 90vh;
+}
+
+.logo{
+    width: 15%;
+}
+.menu h2{
+    font-size: 1em;
+}
+
+/* ============================================
+*==================LAYOUT======================
+=============================================== */
+
+.layout{
+    height: 85%;
+    display: flex;
+    max-width: 100%;
+    flex-direction: row wrap;
+    margin-top: 1em ;
+
+}
+.menu{
+    display: flex;
+    width: 25%;
+    height: 100%;
+    margin-right : 1em;
+    /* background-color: antiquewhite; */
+    border: rgb(208, 204, 204) solid ;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.name-menu{
+    display: flex;
+    width:  50%;
+    height: 7%;
+    border: rgb(208, 204, 204) solid ;
+    margin: 0.5em;
+    font-size: 0.5em;
+    font-weight: 700;
+    justify-content: center;
+    align-items: center;
+}
+.name-menu.active {
+    border: 2px solid blueviolet;
+    color: blueviolet;
+    font-weight: bolder;
+    font-size: 0.6em;
+  }
+.name-menu :hover{
+    border: plum;
+    color: plum ;
+}
+
+.main{
+    display: none;
+    /* display: flex; */
+    width: 100%;
+    /* background-color: antiquewhite; */
+    /* border: solid gray; */
+    flex-direction: column;
+}
+.main h2{
+    font-size: 0.7em;
+}
+.chart{
+    display: flex;
+    /* border: #5a5a5a solid; */
+    height: 10em; 
+    flex-direction: row;
+    justify-content: space-between;
+}
+.chart .request{
+    display: flex;
+    width: 32%;
+    border: rgb(208, 204, 204) solid ;
+    /* margin-right: 0.5em; */
+}
+.chart .running{
+    display: flex;
+    width: 32%;
+    border: rgb(208, 204, 204) solid ;
+    /* margin-right: 0.5em; */
+}
+.chart .devices{
+    display: flex;
+    width: 32%;
+    border: rgb(208, 204, 204) solid ;
+    flex-direction: column;
+}
+
+
+.chart .devices h2{
+    display: flex;
+}
+
+.devices .list-table {
+    display: block;
+    margin: 0 auto;
+    font-size: 0.7em;
+    width: 90%;
+    border-collapse: collapse;
+    height: 100%;
+    overflow: auto;
+  }
+
+  
+  .devices .list-table th:first-child {
+    font-weight: bold;
+  }
+  
+  .devices .list-table th,
+  .devices .list-table td {
+    border: 1px solid #ddd;
+    padding: 5px;
+    height: 5vh;
+    width: 5em;
+    max-width: 5em;
+    word-wrap: break-word;
+  }
+  
+  .devices .list-table th {
+    background-color: #f2f2f2;
+  }
+  
+  .devices .list-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .devices .list-table tbody tr:hover {
+    background-color: #f5f5f5;
+  }
+  
+
+.console{
+    display: flex;
+    height: 100%;
+    border: rgb(208, 204, 204) solid ;  
+    margin-top: 0.5em;
+    flex-direction: column;
+}
+
+.console h2{
+    font-size: 1em;
+    margin: 0.5em 0.5em 0.5em 0.5em;
+}
+
+.console-chat{
+    margin-left: 0.5em;
+    flex-direction: column;
+    /* overflow: auto; */
+    height:100% ;
+}
+
+.list-table {
+    display: block;
+    margin: 0 auto;
+    font-size: 1em;
+    width: 90%;
+    border-collapse: collapse;
+    height: 44vh;
+    overflow: auto;
+  }
+  .list-table thead th {
+    position: sticky;
+    top: 0;
+    background-color: #f2f2f2;
+  }
+  
+  .list-table th:last-child {
+    font-weight: bold;
+    width: 100%;
+    max-width: 100%;
+  }
+  .list-table tbody {
+    overflow: auto;
+    max-height: 40vh;
+  }
+
+
+  .devices .list-table thead th {
+    position: sticky;
+    top: 0;
+    background-color: #f2f2f2;
+  }
+  
+  .devices .list-table tbody {
+    overflow: auto;
+    max-height: 40vh; /* Điều chỉnh chiều cao tùy ý */
+  }
+
+  .list-table th,
+  .list-table td {
+    border: 1px solid #ddd;
+    padding: 5px;
+    height: 5vh;
+    
+    word-wrap: break-word;
+  }
+
+/*  ============================================
+*===================DEVICES======================
+=============================================== */
+
+.layout-devices{
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.taskbar{
+    height: 10vh;
+    display: flex;
+    flex-direction: row ;
+    border: solid rgb(208, 204, 204);
+    align-items: center;
+    justify-content: center;
+}
+.ele-taskbar{
+    justify-content: center;
+    align-items: center;
+    width: 6em;
+    height: 7vh;
+    margin: 0.5em;
+    background-color: rgb(180, 180, 180);
+    display: flex;
+    font-size: 1em;
+
+}
+
+.ele-taskbar :hover{
+    scale: 1.2;
+}
+
+.ele-taskbar.active{
+    color: white;
+    background-color: blueviolet;
+}
+.tab-device{
+    display: none;
+    margin-top: 1vh;
+    height: 100%;
+    flex-direction: column;
+    /* border: solid rgb(208, 204, 204); */
+}
+/* *TAB ADD */
+
+.add-device{
+    display: flex;
+    flex-direction: row;
+    font-size: 1em;
+}
+.add-device h3{
+    font-size: 1em;
+}
+.add-device .enter{
+    display: flex;
+    flex-direction: column;
+    margin-right: 1em;
+    /* border: solid rgb(208, 204, 204); */
+    width: 10em;
+    height: 7vh;
+}
+.add-device button{
+    width: 6em;
+    height: 4vh;
+    margin: auto;
+    background-color: rgb(255, 255, 255);
+    border: solid purple;
+    color: purple;
+    font-size: 1em;
+}
+
+.add-device button:hover{
+    scale: 1.2;
+    font-size: 1.2em;
+}
+
+.list-devices{
+    display: flex;
+    width: 100%;
+    height: 62vh;
+    border: solid rgb(208, 204, 204);
+    margin-top: 1vh;
+    flex-direction: column ;
+    align-items: stretch;
+}
+
+.list-devices h2{
+    font-size: 1.5em;
+    margin: 0.5em;
+    display: block;
+}
+.list-devices .list-table{
+
+    margin: 1em auto;
+    margin-top: 0em;
+    border-collapse: collapse;
+    display: block;
+    overflow: auto;
+}
+
+.list-devices .list-table th{
+    width: 10em;
+    height: 5vh;
+    border: solid rgb(208, 204, 204);
+}
+.list-devices .list-table th,
+.list-devices .list-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.list-devices .list-table th {
+  background-color: #f2f2f2;
+}
+
+.list-devices s .list-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.list-devices .list-table tbody tr:hover {
+  background-color: #f5f5f5;
+}
+
+/* *TAB EDIT */
+
+#info {
+    flex-direction: row;
+}
+
+.edit-info{
+    justify-content: center;
+    position: relative;
+    align-items: center;
+    border: solid rgb(208, 204, 204);
+    height: 70vh;
+    max-width: 50em;
+    display: flex;
+    flex-direction: row wrap;   
+    flex-wrap: wrap;
+}
+
+.serial-robo{
+    position: absolute;
+    left: 1em;
+    top: 2vh;
+}
+
+.serial-robo h2, .serial-robo h3{
+    display: contents;
+}
+
+.save-info-robo{
+    position: absolute;
+    right: 1em;
+    bottom: 1vh;
+    max-width: 5em;
+    height: 6vh;
+}
+.save-info-robo button{
+    font-size: 1em;
+    font-weight: bold;
+    color: black;
+    border-radius: 5px;
+}
+.save-info-robo button:hover{
+    background-color: aquamarine;
+    scale: 1.1;
+}
+
+.info-robo{
+    margin: 1em;
+    /* border: solid rgb(208, 204, 204); */
+}
+
+.info-robo textarea{
+  font-size: 1.4em;
+  border-radius: 5px;
+}
+
+.menu-edit {
+  display: flex;
+  position: relative;
+  max-width: 8em;
+  max-height: 6vh;
+  margin: 0 auto;
+}
+
+.menuOptions {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menuOptions li {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.toggleBtn {
+  background-color: #ccc;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+}
+
+
+  /* *REMOTE */
+  #remote{
+    flex-direction: row;
+  }
+
+  .control-robo{
+    display: flex;
+    flex-direction: row wrap;
+    flex-wrap: wrap;
+    flex-grow: 1;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .layout-control{
+    justify-content: center;
+    position: relative;
+    align-items: center;
+    border: solid rgb(208, 204, 204);
+    height: 70vh;
+    max-width: 50em;
+    display: flex;
+    flex-direction: column;   
+    /* flex-wrap: wrap; */
+}
+.layout-command{
+  margin-top: 7vh;
+  display: flex;
+  border: solid black;
+  width: 100%;
+}
+.menu-control {
+  display: flex;
+  position: relative;
+  max-width: 8em;
+  max-height: 6vh;
+  margin: 0 auto;
+}
+
+.menuOptions {
+  display: none;
+}
+
+.menuOptions.show {
+  display: block;
+}
+
+.remote-robo{
+  display: flex;
+  max-width: 15em;
+  margin: 3em;
+  height: 3vh;
+  justify-content: center;
+  align-items: center;
+}
+.remote-robo button{
+  font-size: 1.4em;
+  border-radius: 5px;
+}
+.remote-robo textarea{
+  font-size: 1.4em;
+  border-radius: 5px;
+}
+.remote-robo h2{
+  font-size: 1.4em;
+}

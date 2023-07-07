@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SERVER</title>
+</head>
+<body>
+    <!-- * header cua trang web -->
+    <header>
+        <section class="logo">
+            <img src="" alt="logo">
+        </section>
+        <section class="name-header">
+            <h1>SERVER</h1>
+        </section>
+    </header>
+    <!--* giao dien chinh -->
+    <div class="layout">
+        <!--* menu cua trang web -->
+        <div class="menu">
+            <section class="name-menu" id="dashboard-tab" onclick="openControl(event,'dashboard','main','name-menu')">
+                DASHBOARD
+            </section>
+            <section class="name-menu" id="decives-tab" onclick="openControl(event,'devices','main','name-menu')">
+                DEVICES
+            </section>
+            <section class="name-menu" id="request-tab" onclick="openControl(event,'request','main','name-menu')">
+                REQUEST
+            </section>
+            <section class="name-menu" id="monitor-tab" onclick="openControl(event,'monitor_maping','main','name-menu')">
+                MONIROR MAPING
+            </section>
+            <section class="name-menu" id="report-tab" onclick="openControl(event,'report','main','name-menu')">
+                REPORT
+            </section>
+            <section class="name-menu" id="setting-tab" onclick="openControl(event,'setting','main','name-menu')">
+                SETTING
+            </section>
+            <section class="name-menu" id="api-tab" onclick="openControl(event,'API_help','main','name-menu')">
+                API HELP
+            </section>
+        </div>
+        <!--* layout dashboard -->
+        <div class="main" id="dashboard">
+            <section class="chart">
+                <div class="request">
+                    <h2>REQUEST CHART</h2>
+                </div>
+                <div class="running">
+                    <h2>RUNNING CHART</h2>
+                </div>
+                <div class="devices">
+                    <h2>DEVICES MANAGER</h2>
+                    <table id="table-devices-online" class="list-table">
+                      <thead>
+                        <tr>
+                          <th>STT</th>
+                          <th>Name</th>
+                          <th>Serial</th>
+                          <th>IP</th>
+                          <th>Status</th>
+                          <th>Column</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>STT</td>
+                          <td>Nameaaaaaaaaaaaaaaaaaaaaaaaaa</td>
+                          <td>Serial</td>
+                          <td>IP</td>
+                          <td>Status</td>
+                          <td>Column</td>
+                        </tr>
+                        <tr>
+                          <td>STT</td>
+                          <td>Name</td>
+                          <td>Serialdddddddddddddddddddddddddd</td>
+                          <td>IP</td>
+                          <td>Status</td>
+                          <td>Column</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  
+            </section>
+            <div class="console">
+                <h2>CONSOLE MONITOR</h2>
+                <section  class="console-chat">
+                    <table id="console-chat" class="list-table">
+                        <thead>
+                            <tr>
+                              <th>Time</th>
+                              <th>Name</th>
+                              <th>Message</th>
+                            </tr>
+                          </thead>
+                          <tbody></tbody>
+                    </table>
+                </section>
+            </div>
+        </div>
+
+        <!--* layout decvice -->
+        <div class="main" id="devices">
+            <section class="layout-devices">
+            <section class="taskbar">
+                <div class="ele-taskbar" id="add-tab" onclick="openControl(event,'add','tab-device','ele-taskbar')" >
+                    <h2>ADD</h2>
+                </div>
+                <div class="ele-taskbar" onclick ="openControl(event,'info','tab-device','ele-taskbar')" >
+                    <h2>EDIT INFO</h2>
+                </div>
+                <div class="ele-taskbar" onclick=" openControl(event,'remote','tab-device','ele-taskbar')" >
+                    <h2>REMOTE</h2>
+                </div>   
+            </section>
+            <section>
+                <div class="tab-device" id="add">
+                    <section class="add-device">
+                        <section class="enter">
+                            <h3>Serial No</h3>
+                            <input type="text" id="messageText" placeholder="nhập serial robot" >
+                        </section>
+                        <section class="enter">
+                            <h3>Type</h3>
+                            <select name="type" id="">
+                                
+                                <option value="tranfer">ROBOT TRANSFER</option>
+                                <option value="reception">ROBOT RECEPTION</option>
+                            </select>
+                        </section>
+                        
+                        <section class="enter">
+                            <button onclick="sendMessage(event)">ADD</button>
+                        </section>
+                        
+                    </section>
+                    <section class="list-devices">
+                        <h2>DEVICES LIST</h2>
+                        <table id="ListDevices" class="list-table">
+                            <thead>
+                              <tr>
+                                <th>Serial</th>
+                                <th>Name</th>
+                                <th>Host</th>
+                                <th>Port</th>
+                                <th>Status</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                                                            
+                            </tbody>
+                          </table>
+                    </section>
+                    
+                </div>
+
+
+                <div class="tab-device" id="info">
+                    <section id="edit-info" class="edit-info">
+                        <section class="serial-robo" id="serial-robo">
+                            <h2>SERIAL:</h2>
+                            <h3></h3>
+                        </section>
+                        <section class="info-robo" id="name-robo">
+                            <h2>Robot Name:</h2>
+                            <textarea id="edit-name" rows="1" cols="15"></textarea>
+                        </section>
+                        <section class="info-robo" id="home-robo">
+                            <h2>Home location:</h2>
+                            <textarea id="edit-home" rows="1" cols="15"></textarea>
+                        </section>
+                        <section class="info-robo" id="ip-server-robo">
+                            <h2>IP SERVER:</h2>
+                            <textarea id="edit-ip-server" rows="1" cols="15"></textarea>
+                        </section>
+                        <section class="info-robo" id="port-server-robo">
+                            <h2>PORT SERVER:</h2>
+                            <textarea id="edit-port" rows="1" cols="15"></textarea>
+                        </section>
+                        <section class="info-robo" id="SSID_ST-robo">
+                            <h2>SSID_ST:</h2>
+                            <textarea id="edit-SSID-ST" rows="1" cols="15"></textarea>
+                        </section>
+                        <section class="info-robo" id="PASS_ST-robo">
+                            <h2>PASS_ST</h2>
+                            <textarea id="edit-PASS-ST" rows="1" cols="15"></textarea>
+                        </section>
+                        <section class="info-robo" id="SSID_AP-robo">
+                            <h2>SSID_AP</h2>
+                            <textarea id="edit-SSID-AP" rows="1" cols="15"></textarea>
+                        </section>
+                        <section class="info-robo" id="PASS_AP-robo">
+                            <h2>PASS_AP</h2>
+                            <textarea id="edit-PASS-AP" rows="1" cols="15"></textarea>
+                        </section>
+                        <section class="save-info-robo" id="save-info-robo">
+                            <button id="save-info" onclick="saveEditInfo(event)">SAVE</button>
+                        </section>
+                        
+                    </section>
+
+                    <div class="menu-edit" id="menu-edit">
+                        <button class="toggleBtn" >Devices Online</button>
+                        <ul class="menuOptions">
+                        </ul>
+                      </div>
+                      
+
+                </div>
+                <div class="tab-device" id="remote">
+                        <section class="layout-control">
+                            <section class="serial-robo" id="serial-robo-control">
+                                <h2>SERIAL:</h2>
+                                <h3></h3>
+                            </section>
+                            <section class="layout-command">
+                                <section class="info-robo" >
+                                    <h2>COMMAND:</h2>
+                                    <section id="command"></section>
+                                </section>
+                            </section>
+                            
+                            <section class="control-robo">
+                                <section class="remote-robo" id="goto">
+                                    <h2>GOTO:</h2>
+                                    <textarea id="commandGoto" rows="1" cols="20" onkeydown="handleEnterKey(event)"></textarea>
+                                </section>
+                                <section class="remote-robo" id="take">
+                                    <button onclick="addCommand(this.innerText + ':')">TAKE</button>
+                                </section>
+                                <section class="remote-robo" id="get">
+                                    <button onclick="addCommand(this.innerText + ':')">GET</button>
+                                </section>
+                                <section class="remote-robo" id="pause">
+                                    <button onclick="addCommand(this.innerText + ':')">PAUSE</button>
+                                </section>
+                                <section class="remote-robo" id="run">
+                                    <button onclick="addCommand(this.innerText + ':')">RUN</button>
+                                </section>
+                                <section class="remote-robo" id="clear">
+                                    <button onclick="addCommand(this.innerText + ':')">CLEAR</button>
+                                </section>
+                                
+                            </section>
+                            <section class="save-info-robo" id="submit-control-robo">
+                                <button id="submid-control" onclick="SubmitCommand(event)">SUBMIT</button>
+                            </section>
+                        </section>
+    
+                        <div class="menu-control" id="menu-control">
+                            <button class="toggleBtn" >Devices Online</button>
+                            <ul class="menuOptions">
+                            </ul>
+                          </div>
+                </div>
+            </section>
+        </section>
+        </div>
+
+        <!-- *REQUEST -->
+        <div class="main" id="request"> 
+            
+        </div>
+
+        <!-- *MONITOR MAPPING -->
+        <div class="main" id="monitor_maping"> 
+            
+        </div>
+
+        <!--*REPORT  -->
+        <div class="main" id="report"> 
+            
+        </div>
+
+        <!-- *SETTING -->
+        <div class="main" id="setting"> 
+            
+        </div>
+
+        <!-- *API HELP -->
+        <div class="main" id="API_help"> 
+            
+        </div>
+
+
+
+
+
+    </div>
+    
+    <footer>
+
+    </footer>
+    <script src="control.js"></script>
+</body>
+</html>
