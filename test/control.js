@@ -8,6 +8,8 @@ function addOption(option) {
 
 
 
+
+
     
     selectElement.appendChild(optionElement);
   }
