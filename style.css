@@ -92,6 +92,13 @@ header {
     font-weight: 700;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
+}
+.name-menu:hover{
+    border: 2px solid blueviolet;
+    color: blueviolet;
+    font-weight: bolder;
+    font-size: 0.6em;
 }
 .name-menu.active {
     border: 2px solid blueviolet;
@@ -99,10 +106,6 @@ header {
     font-weight: bolder;
     font-size: 0.6em;
   }
-.name-menu :hover{
-    border: plum;
-    color: plum ;
-}
 
 .main{
     display: none;
@@ -276,11 +279,12 @@ header {
     background-color: rgb(180, 180, 180);
     display: flex;
     font-size: 1em;
+    cursor: pointer;
 
 }
 
-.ele-taskbar :hover{
-    scale: 1.2;
+.ele-taskbar:hover{
+    font-size: 1.2em;
 }
 
 .ele-taskbar.active{
@@ -320,11 +324,12 @@ header {
     border: solid purple;
     color: purple;
     font-size: 1em;
+    cursor: pointer;
 }
 
 .add-device button:hover{
-    scale: 1.2;
-    font-size: 1.2em;
+    scale: 1.1;
+    font-size: 1.1em;
 }
 
 .list-devices{
@@ -332,6 +337,7 @@ header {
     width: 100%;
     height: 62vh;
     border: solid rgb(208, 204, 204);
+    margin: 0 auto;
     margin-top: 1vh;
     flex-direction: column ;
     align-items: stretch;
@@ -343,16 +349,25 @@ header {
     display: block;
 }
 .list-devices .list-table{
-
+    flex-grow: 1;
     margin: 1em auto;
     margin-top: 0em;
     border-collapse: collapse;
     display: block;
     overflow: auto;
 }
+.list-table button{
+    cursor: pointer;
+    margin-left: 0.5em;
+}
+
+.list-table button:hover{
+  color: red;
+  border: none;
+}
 
 .list-devices .list-table th{
-    width: 10em;
+    width: 25em;
     height: 5vh;
     border: solid rgb(208, 204, 204);
 }
@@ -374,10 +389,15 @@ header {
   background-color: #f5f5f5;
 }
 
+.list-devices .list-table tbody tr button :hover {
+  color: #694242;
+}
+
 /* *TAB EDIT */
 
 #info {
     flex-direction: row;
+    flex-grow: 1;
 }
 
 .edit-info{
@@ -386,7 +406,7 @@ header {
     align-items: center;
     border: solid rgb(208, 204, 204);
     height: 70vh;
-    max-width: 50em;
+    /* max-width: 50em; */
     display: flex;
     flex-direction: row wrap;   
     flex-wrap: wrap;
@@ -414,6 +434,7 @@ header {
     font-weight: bold;
     color: black;
     border-radius: 5px;
+    cursor: pointer;
 }
 .save-info-robo button:hover{
     background-color: aquamarine;
@@ -433,7 +454,7 @@ header {
 .menu-edit {
   display: flex;
   position: relative;
-  max-width: 8em;
+  max-width: 10em;
   max-height: 6vh;
   margin: 0 auto;
 }
@@ -463,6 +484,7 @@ header {
   /* *REMOTE */
   #remote{
     flex-direction: row;
+    flex-grow: 1;
   }
 
   .control-robo{
@@ -480,7 +502,7 @@ header {
     align-items: center;
     border: solid rgb(208, 204, 204);
     height: 70vh;
-    max-width: 50em;
+    /* max-width: 50em; */
     display: flex;
     flex-direction: column;   
     /* flex-wrap: wrap; */
@@ -488,9 +510,31 @@ header {
 .layout-command{
   margin-top: 7vh;
   display: flex;
-  border: solid black;
+  /* border: solid black; */
+  background-color: #e9e9e9;
   width: 100%;
+  overflow: auto;
 }
+.layout-command .info-robo{
+  display: flex;
+  flex-direction: row;
+}
+
+.layout-command h2{
+  display: flex;
+  font-size: 1em;
+}
+
+.layout-command button{
+  font-size: 1em;
+  cursor: pointer;
+  margin-left: 0.5em;
+}
+#command {
+  display: flex;
+  margin-left: 1em;
+}
+
 .menu-control {
   display: flex;
   position: relative;
@@ -518,6 +562,7 @@ header {
 .remote-robo button{
   font-size: 1.4em;
   border-radius: 5px;
+  cursor: pointer;
 }
 .remote-robo textarea{
   font-size: 1.4em;
@@ -525,4 +570,105 @@ header {
 }
 .remote-robo h2{
   font-size: 1.4em;
+}
+
+
+/* *==============REQUEST================== */
+
+/* #request{
+  /* border: solid; */
+ 
+
+
+.ele-taskbar-request{
+  justify-content: center;
+  align-items: center;
+  width: 6em;
+  height: 7vh;
+  margin: 0.5em;
+  background-color: rgb(180, 180, 180);
+  display: flex;
+  font-size: 0.7em;
+  cursor: pointer;
+  font-weight: bolder;
+}
+
+.ele-taskbar-request:hover{
+  font-size: 1em;
+}
+
+.ele-taskbar-request.active{
+  color: white;
+  background-color: blueviolet;
+}
+.tab-request{
+  display: none;
+  flex-direction: row;
+  height: 100%;
+  border: solid;
+  margin-top: 0.5em;
+}
+
+.layout-location{
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  /* border: #5a5a5a solid; */
+  /* margin: 1em; */
+  flex-grow: 1;
+}
+
+.add-location{
+  display: flex;
+  flex-direction: column;
+  right: 0em;
+  margin: 1em;
+  border: #5a5a5a solid;
+  width: 15em;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.layout-location h2{
+  font-size: 1.5em;
+  margin-bottom: 0.5em;
+}
+
+.layout-location .list-table{
+
+  margin: 0em auto;
+  margin-top: 0em;
+  border-collapse: collapse;
+  display: block;
+  overflow: auto;
+}
+
+.layout-location .list-table th{
+  width: 10em;
+  height: 5vh;
+  border: solid rgb(208, 204, 204);
+}
+.layout-location .list-table th,
+.layout-location .list-table td {
+border: 1px solid #ddd;
+padding: 8px;
+}
+.layout-location .list-table th {
+background-color: #f2f2f2;
+}
+
+.layout-location s .list-table tbody tr:nth-child(even) {
+background-color: #f9f9f9;
+}
+
+.layout-location .list-table tbody tr:hover {
+background-color: #f5f5f5;
+}
+
+.run-add{
+  font-size: 1em;
+  margin-top: 1em;
 }

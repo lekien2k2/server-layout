@@ -123,11 +123,11 @@
                     <section class="add-device">
                         <section class="enter">
                             <h3>Serial No</h3>
-                            <input type="text" id="messageText" placeholder="nhập serial robot" >
+                            <input type="text" id="serial-add" placeholder="nhập serial robot" >
                         </section>
                         <section class="enter">
                             <h3>Type</h3>
-                            <select name="type" id="">
+                            <select name="type" id="type-add">
                                 
                                 <option value="tranfer">ROBOT TRANSFER</option>
                                 <option value="reception">ROBOT RECEPTION</option>
@@ -135,7 +135,7 @@
                         </section>
                         
                         <section class="enter">
-                            <button onclick="sendMessage(event)">ADD</button>
+                            <button onclick="addRobo(event)">ADD</button>
                         </section>
                         
                     </section>
@@ -146,8 +146,8 @@
                               <tr>
                                 <th>Serial</th>
                                 <th>Name</th>
-                                <th>Host</th>
-                                <th>Port</th>
+                                <th>Type</th>
+                                <th>First Access</th>
                                 <th>Status</th>
                               </tr>
                             </thead>
@@ -205,7 +205,7 @@
                     </section>
 
                     <div class="menu-edit" id="menu-edit">
-                        <button class="toggleBtn" >Devices Online</button>
+                        <button class="toggleBtn" >Selcect Device</button>
                         <ul class="menuOptions">
                         </ul>
                       </div>
@@ -264,7 +264,90 @@
 
         <!-- *REQUEST -->
         <div class="main" id="request"> 
-            
+            <section class="taskbar" > 
+                <section class="ele-taskbar-request" id="location-item" onclick="openControl(event,'location-tab','tab-request','ele-taskbar-request')">
+                    LOCATION
+                </section>
+
+                <section class="ele-taskbar-request" onclick="openControl(event,'show-request-tab','tab-request ','ele-taskbar-request')">
+                    REQUEST
+                </section>
+            </section>
+
+            <section class="tab-request" id="location-tab">
+                <section class="layout-location">
+                    <h2>Location list</h2>
+                    <table class="list-table">
+                    <thead>
+                        <tr>
+                        <th>STT</th>
+                        <th>Name</th>
+                        <th>Code</th>
+                        <th>is_empty</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                    </table>
+                </section>
+                
+                <section class="layout-location">
+                    <section class="add-location">
+                        <div class="menu-edit" id="menu-add">
+                            <button class="toggleBtn" >Seclect Decive</button>
+                            <ul class="menuOptions">
+                            </ul>
+                          </div>
+                          <button class="run-add">Auto add</button>
+                    </section>
+    
+                    <section class="add-location">
+                        <section class="enter">
+                            <h3>Name Location</h3>
+                            <input type="text" id="name-qr" placeholder="name location" >
+                        </section>
+                        <section class="enter">
+                            <h3>Code Location</h3>
+                            <input type="text" id="code-qr" placeholder="code location" >
+                        </section>
+                        
+                        <section class="enter">
+                            <button onclick="sendMessage(event)">ADD</button>
+                        </section>
+                    </section>
+                </section>
+                
+                    
+            </section>
+
+            <section class="tab-request" id="show-request-tab">
+                <section class="layout-location">
+                    <section class="add-location">
+                        <h2>Web-app chart</h2>
+                    </section>
+    
+                    <section class="add-location">
+                        <h2>Server chart</h2>
+                    </section>
+                </section>
+                
+                <section class="layout-location">
+                    <h2>Order request</h2>
+                    <table class="list-table">
+                    <thead>
+                        <tr>
+                        <th>STT</th>
+                        <th>Order No</th>
+                        <th>Serial</th>
+                        <th>CMD</th>
+                        <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                    </table>
+                </section>
+                
+               
+            </section>
         </div>
 
         <!-- *MONITOR MAPPING -->
@@ -286,11 +369,6 @@
         <div class="main" id="API_help"> 
             
         </div>
-
-
-
-
-
     </div>
     
     <footer>

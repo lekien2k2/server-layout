@@ -7,10 +7,12 @@
 //* websockets
 
 var client_id = Date.now()
-var websocket = new WebSocket(`ws://192.168.1.103:8080/ws/browser/${client_id}`);
+var websocket = new WebSocket(`ws://192.168.1.178:8000/ws/browser/${client_id}`);
 var data_update_decives
 
-
+// setInterval(function() {
+//   sendMessage();
+// }, 5000);
 
 websocket.onmessage = function(event) {
     msg = JSON.parse(event.data)
@@ -61,18 +63,40 @@ websocket.onerror = function(error) {
 
 };
 
-function sendMessage(event) {
-    var input = document.getElementById("messageText")
-    msg = {
-        "type": "browser_message",
-        "data": {
-            "message": input.value,
-        }
+function addRobo(event) {
+    var input = document.getElementById("serial-add")
+    var type = document.getElementById("type-add")
+    var json = {
+        "name":"",
+        "type": type.value,
+        "serial": input.value
     }
-
-    websocket.send(JSON.stringify(msg))
+    if(input.value != ""){
+    fetch('http://192.168.1.178:8001/api/v1/robot/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(json)
+  })
+    .then(response => {
+      if (response.ok) {
+        console.log('ADD DONE');
+      } else {
+        throw new Error('Error: ' + response.status);
+      }
+    })
+    .catch(error => {
+      // Xử lý lỗi trong trường hợp không thể truy cập API
+      console.log(error);
+    });
     input.value = ''
     event.preventDefault()
+
+}
+alert("Add robot success")
+location.reload();
+
 }
 
 // function sendCommand(event, robot_serial) {
@@ -149,53 +173,139 @@ function clearDataDevices() {
 
 function processListDevice(data) {
   // Lấy tham chiếu đến phần tử tbody trong bảng
-  const tbody = document.querySelector('#ListDevices tbody');
-  console.log(data)
-  // Tạo các hàng trong bảng từ dữ liệu nhận được
-  data.forEach(item => {
-    // Tạo một hàng mới
-    const row = document.createElement('tr');
+  // const tbody = document.querySelector('#ListDevices tbody');
+  // console.log(data)
+  // // Tạo các hàng trong bảng từ dữ liệu nhận được
+  // data.forEach(item => {
+  //   // Tạo một hàng mới
+  //   const row = document.createElement('tr');
 
-    // Tạo các ô dữ liệu trong hàng
-    const cell1 = document.createElement('td');
-    cell1.textContent = item["serial"];
-    row.appendChild(cell1);
+  //   // Tạo các ô dữ liệu trong hàng
+  //   const cell1 = document.createElement('td');
+  //   cell1.textContent = item["serial"];
+  //   row.appendChild(cell1);
 
-    const cell2 = document.createElement('td');
-    cell2.textContent = item["name"];
-    row.appendChild(cell2);
+  //   const cell2 = document.createElement('td');
+  //   cell2.textContent = item["name"];
+  //   row.appendChild(cell2);
 
-    const cell3 = document.createElement('td');
-    cell3.textContent = item["host"];
-    row.appendChild(cell3);
+  //   const cell3 = document.createElement('td');
+  //   cell3.textContent = item["type"];
+  //   row.appendChild(cell3);
 
-    const cell4 = document.createElement('td');
-    cell4.textContent = item["port"];
-    row.appendChild(cell4);
+  //   const cell4 = document.createElement('td');
+  //   cell4.textContent = item["created_at"];
+  //   row.appendChild(cell4);
 
-    const cell5 = document.createElement('td');
-    cell5.textContent = item["status"];
-    row.appendChild(cell5);
+  //   const cell5 = document.createElement('td');
+  //   cell5.textContent = item["status"];
+  //   row.appendChild(cell5);
 
-    // Thêm hàng vào tbody
-    tbody.appendChild(row);
-  });
+  //   // Thêm hàng vào tbody
+  //   tbody.appendChild(row);
+  // });
 
-  const menuOptions = document.querySelector('#menu-edit ul')
+  // const menuOptions = document.querySelector('#menu-edit ul')
   const menu = document.querySelector('#menu-control ul')
+  const menu1 = document.querySelector('#menu-add ul')
   data.forEach(item=>{
-    const option = document.createElement('li');
-    option.textContent = item["serial"];
-    menuOptions.appendChild(option);
-    // console.log(option)
     const option1 = document.createElement('li');
     option1.textContent = item["serial"];
     menu.appendChild(option1)
     // console.log(option)
+    const option2 = document.createElement('li');
+    option2.textContent = item["serial"];
+    menu1.appendChild(option2)
   });
-  console.log(menuOptions.textContent)
   console.log(menu.textContent)
 }
+
+fetch('http://192.168.1.178:8001/api/v1/robots/', {
+  method: 'GET',
+  headers: {
+    'Content-Type': 'application/json'
+  }
+})
+  .then(response => response.json())
+  .then(data => {
+    // Xử lý dữ liệu nhận được từ API
+    const tbody = document.querySelector('#ListDevices tbody');
+    console.log(data);
+    const menuOptions = document.querySelector('#menu-edit ul')
+
+    // Tạo các hàng trong bảng từ dữ liệu nhận được
+    data["robots"].forEach(item => {
+      // Tạo một hàng mới
+      const option = document.createElement('li');
+      option.textContent = item["serial"];
+      menuOptions.appendChild(option);
+
+      const row = document.createElement('tr');
+
+      // Tạo các ô dữ liệu trong hàng
+      const cell1 = document.createElement('td');
+      cell1.textContent = item["serial"];
+      row.appendChild(cell1);
+
+      const cell2 = document.createElement('td');
+      cell2.textContent = item["name"];
+      row.appendChild(cell2);
+
+      const cell3 = document.createElement('td');
+      cell3.textContent = item["type"];
+      row.appendChild(cell3);
+
+      const cell4 = document.createElement('td');
+      cell4.textContent = item["created_at"];
+      row.appendChild(cell4);
+
+      const cell5 = document.createElement('td');
+      cell5.textContent = item["status"];
+      row.appendChild(cell5);
+
+      const cell6 = document.createElement('td');
+      const deleteButton = document.createElement('button');
+      deleteButton.textContent = "Delete";
+      deleteButton.addEventListener('click', function() {
+        // Hiển thị hộp thoại xác nhận trước khi gửi yêu cầu DELETE
+        const confirmation = confirm('Do you want to delete robot with serial: ' + item["serial"] + '?');
+        if (confirmation) {
+          // Gửi yêu cầu DELETE khi người dùng xác nhận
+          fetch(`http://192.168.1.178:8001/api/v1/robot/${item["serial"]}`, {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          })
+            .then(response => {
+              // Xử lý kết quả từ yêu cầu DELETE
+              if (response.ok) {
+                console.log(`Deleted robot with serial: ${item["serial"]}`);
+                // Xóa hàng khỏi bảng
+                tbody.removeChild(row);
+              } else {
+                console.log(`Failed to delete robot with serial: ${item["serial"]}`);
+              }
+            })
+            .catch(error => {
+              // Xử lý lỗi trong trường hợp không thể gửi yêu cầu DELETE
+              console.log(`Error deleting robot with serial: ${item["serial"]}`, error);
+            });
+        }
+      });
+      cell6.appendChild(deleteButton);
+      row.appendChild(cell6);
+
+      // Thêm hàng vào tbody
+      tbody.appendChild(row);
+    });
+  })
+  .catch(error => {
+    // Xử lý lỗi trong trường hợp không thể truy cập API
+    console.log(error);
+  });
+
+
 
 
 
@@ -233,6 +343,7 @@ window.onload = function() {
   // Hiển thị tab "dashboard"
   document.getElementById("dashboard").style.display = "flex";
   document.getElementById("add").style.display = "flex";
+  document.getElementById("location-tab").style.display = "flex";
   
   // Xóa lớp "active" khỏi tất cả các tablinks
  
@@ -241,6 +352,8 @@ window.onload = function() {
   dashboardTab.classList.add("active");
   var addTab = document.getElementById("add-tab");
   addTab.classList.add("active");
+  var locationTab = document.getElementById("location-item");
+  locationTab.classList.add("active");
 }
 
 
@@ -271,6 +384,7 @@ toggleBtns.forEach(function(toggleBtn, index) {
       editInfoRobot(option);
       controlRobot(option);
       menuOption.style.display = 'none';
+
     }
   });
 });
@@ -281,28 +395,140 @@ function editInfoRobot(option) {
   console.log('Option selected:', option);
   const serial = document.querySelector('#serial-robo h3');
   serial.textContent = option;
-data_update_decives.forEach(json=>{
-  if (json["serial"] == option){
+  fetch ('http://192.168.1.178:8001/api/v1/robot/'+option)
+
+    .then(response => response.json())
+    .then(data => {
+      // Xử lý dữ liệu nhận được từ API
       var name = document.getElementById('edit-name');
-        name.value = json["name"];
+        name.value = data["robot"]["name"];
       var name = document.getElementById('edit-home');
-        name.value = json["home_location"];
+        name.value = data["home_location"];
       var name = document.getElementById('edit-ip-server');
-        name.value = json["ip_server"];
+        name.value = data["ip_server"];
       var name = document.getElementById('edit-port');
-        name.value = json["port_server"]
+        name.value = data["port_server"]
       var name = document.getElementById('edit-SSID-ST');
-        name.value = json["SSID_ST"];
+        name.value = data["SSID_ST"];
       var name = document.getElementById('edit-PASS-ST');
-        name.value = json["PASS_ST"];
+        name.value = data["PASS_ST"];
       var name = document.getElementById('edit-SSID-AP');
-        name.value = json["SSID_AP"];
+        name.value = data["SSID_AP"];
       var name = document.getElementById('edit-PASS-AP');
-        name.value = json["PASS_AP"];
-  }
-  });
+        name.value = data["PASS_AP"];
+      console.log(data);
+    })
+  
+    .catch(error => {
+      // Xử lý lỗi trong trường hợp không thể truy cập API
+      console.log(error);
+    });
+// data_update_decives.forEach(json=>{
+//   if (json["serial"] == option){
+//       var name = document.getElementById('edit-name');
+//         name.value = json["name"];
+//       var name = document.getElementById('edit-home');
+//         name.value = json["home_location"];
+//       var name = document.getElementById('edit-ip-server');
+//         name.value = json["ip_server"];
+//       var name = document.getElementById('edit-port');
+//         name.value = json["port_server"]
+//       var name = document.getElementById('edit-SSID-ST');
+//         name.value = json["SSID_ST"];
+//       var name = document.getElementById('edit-PASS-ST');
+//         name.value = json["PASS_ST"];
+//       var name = document.getElementById('edit-SSID-AP');
+//         name.value = json["SSID_AP"];
+//       var name = document.getElementById('edit-PASS-AP');
+//         name.value = json["PASS_AP"];
+//   }
+//   });
 }
 
+
+
+// function saveEditInfo(event){
+//   const editInfo = document.querySelectorAll('#edit-info textarea')
+//   const serialRobo = document.querySelector('#serial-robo h3').textContent
+//   console.log(serialRobo)
+//   console.log(editInfo[0].value)
+//   var json = {
+//     "robot":{
+//       "serial":serialRobo,
+//       "name":editInfo[0].value,
+//       "home_location":editInfo[1].value,
+//       "ip_server":editInfo[2].value,
+//       "port_server":editInfo[3].value,
+//       "SSID_ST":editInfo[4].value,
+//       "PASS_ST":editInfo[5].value,
+//       "SSID_AP":editInfo[6].value,
+//       "PASS_AP":editInfo[7].value
+//     }
+//   }
+//   console.log(json)
+//   fetch('http://192.168.1.178:8001/api/v1/robot/'+serialRobo),{
+//     method: 'POST', // or 'PUT'
+//     body: JSON.stringify(json), // data can be `string` or {object}!
+    
+//   }
+//   .catch(error => {
+//     // Xử lý lỗi trong trường hợp không thể truy cập API
+//     console.log(error);
+//   });
+  
+
+//   // data_update_decives.forEach(item=>{
+//   //   if(serialRobo == item["serial"]){
+//   //     console.log("SAVE DONE")
+//   //   }
+//   // });
+// }
+
+function saveEditInfo(event) {
+  event.preventDefault(); // Ngăn chặn hành vi mặc định của form (nếu có)
+
+  const editInfo = document.querySelectorAll('#edit-info textarea');
+  const serialRobo = document.querySelector('#serial-robo h3').textContent;
+  console.log(serialRobo);
+  console.log(editInfo[0].value);
+
+  var json = {
+      "serial": serialRobo,
+      "name": editInfo[0].value,
+      "home_location": editInfo[1].value,
+      "ip_server": editInfo[2].value,
+      "port_server": editInfo[3].value,
+      "SSID_ST": editInfo[4].value,
+      "PASS_ST": editInfo[5].value,
+      "SSID_AP": editInfo[6].value,
+      "PASS_AP": editInfo[7].value
+  };
+  console.log(json);
+
+  fetch('http://192.168.1.178:8001/api/v1/robot/' + serialRobo, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(json)
+  })
+    .then(response => {
+      if (response.ok) {
+        console.log('SAVE DONE');
+        alert('Save success');
+        document.location(reload)
+      } else {
+        throw new Error('Error: ' + response.status);
+      }
+    })
+    .catch(error => {
+      // Xử lý lỗi trong trường hợp không thể truy cập API
+      console.log(error);
+    });
+}
+
+
+// * add command and submit to remote decives
 function controlRobot(option){
   console.log('Option selected:', option);
   const serial = document.querySelector('#serial-robo-control h3');
@@ -310,20 +536,19 @@ function controlRobot(option){
 }
 
 
-
-function saveEditInfo(event){
-  const editInfo = document.querySelector('#info-robo textarea')
-  const serialRobo = document.querySelector('#serial-robo h3').textContent
-  console.log(serialRobo)
-  data_update_decives.forEach(item=>{
-    if(serialRobo == item["serial"]){
-      console.log("SAVE DONE")
-    }
-  });
-}
 function SubmitCommand(event){
   const serialRobo = document.querySelector('#serial-robo-control h3').textContent
-  const commandControl = document.getElementById('command').textContent
+  const commandControl = document.querySelectorAll('#command button')
+  var command = ""
+commandControl.forEach(item=>{
+  if(command == ""){
+  command = item.textContent;
+  }
+  else{
+    command = command + "," + item.textContent;
+  }
+});
+
   data_update_decives.forEach(item=>{
     if(serialRobo == item["serial"]){
       console.log("SUBMIT DONE")
@@ -331,7 +556,7 @@ function SubmitCommand(event){
         "type":"browser_command",
         "data":{
           "serial":serialRobo,
-          "command":commandControl.split(",")
+          "command":command
         },
       }
       websocket.send(JSON.stringify(json))
@@ -345,23 +570,24 @@ function handleEnterKey(event) {
   if (event.keyCode === 13) { // Kiểm tra mã phím Enter
       event.preventDefault(); // Ngăn chặn hành động mặc định của phím Enter
       var textareaValue = document.getElementById("commandGoto").value.trim();
-      addCommand('GOTO:'+textareaValue); // Gọi hàm addCommand()
+      addCommand('GOTO:'+ textareaValue); // Gọi hàm addCommand()
       document.getElementById("commandGoto").value = "";
   }
 }
 
 function addCommand(content) {
   var commandSection = document.getElementById('command')
-  if (content !== "") {
-    if(commandSection.textContent != ""){
-    commandSection.textContent =commandSection.textContent +","+ content;
-    }
-    else{
-      commandSection.textContent = content
-    }
-  }
+  const option = document.createElement('button');
+    option.textContent = content;
+    commandSection.appendChild(option);
 
 }
+const commandSection = document.getElementById('command');
+commandSection.addEventListener('click', function(event) {
+  const target = event.target;
+  if (target.tagName === 'BUTTON') {
+    target.remove();
+  }
+});
 
-
-
+// * request

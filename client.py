@@ -15,7 +15,7 @@ def generate_id():
 # 192.168.100.25:80
 async def send_message():
     async with websockets.connect(
-        "ws://192.168.1.103:8080/ws/robot/" + generate_id()
+        "ws://192.168.1.178:8000/ws/robot/uv3x"
     ) as websocket:
         
         while True:
