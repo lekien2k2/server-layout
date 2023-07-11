@@ -54,15 +54,15 @@
                 </div>
                 <div class="devices">
                     <h2>DEVICES MANAGER</h2>
-                    <table id="table-devices-online" class="list-table">
+                    <table id="devices-manager" class="list-table">
                       <thead>
                         <tr>
                           <th>STT</th>
-                          <th>Name</th>
                           <th>Serial</th>
-                          <th>IP</th>
+                          <th>Name</th>
+                          <th>Type</th>
+                          <th>Created at</th>
                           <th>Status</th>
-                          <th>Column</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -129,8 +129,8 @@
                             <h3>Type</h3>
                             <select name="type" id="type-add">
                                 
-                                <option value="tranfer">ROBOT TRANSFER</option>
-                                <option value="reception">ROBOT RECEPTION</option>
+                                <option value="Transporter">ROBOT TRANSPORTER</option>
+                                <option value="Reception">ROBOT RECEPTION</option>
                             </select>
                         </section>
                         
@@ -277,7 +277,7 @@
             <section class="tab-request" id="location-tab">
                 <section class="layout-location">
                     <h2>Location list</h2>
-                    <table class="list-table">
+                    <table class="list-table" id="list-location">
                     <thead>
                         <tr>
                         <th>STT</th>
@@ -303,15 +303,15 @@
                     <section class="add-location">
                         <section class="enter">
                             <h3>Name Location</h3>
-                            <input type="text" id="name-qr" placeholder="name location" >
+                            <input type="text" id="name-location" placeholder="name location" >
                         </section>
                         <section class="enter">
-                            <h3>Code Location</h3>
-                            <input type="text" id="code-qr" placeholder="code location" >
+                            <h3>QR Code</h3>
+                            <input type="text" id="qr-code" placeholder="code location" >
                         </section>
                         
                         <section class="enter">
-                            <button onclick="sendMessage(event)">ADD</button>
+                            <button onclick="addLocation(event)">ADD</button>
                         </section>
                     </section>
                 </section>
@@ -332,7 +332,7 @@
                 
                 <section class="layout-location">
                     <h2>Order request</h2>
-                    <table class="list-table">
+                    <table class="list-table" >
                     <thead>
                         <tr>
                         <th>STT</th>

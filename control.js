@@ -98,6 +98,40 @@ alert("Add robot success")
 location.reload();
 
 }
+function addLocation(event) {
+    var input = document.getElementById("name-location")
+    var type = document.getElementById("qr-code")
+    var json = {
+        "name":input.value,
+        "qr_code": type.value,
+    }
+    if(input.value != ""){
+    fetch('http://192.168.1.178:8002/api/v1/table/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(json)
+  })
+    .then(response => {
+      if (response.ok) {
+        console.log('ADD DONE');
+      } else {
+        throw new Error('Error: ' + response.status);
+      }
+    })
+    .catch(error => {
+      // Xử lý lỗi trong trường hợp không thể truy cập API
+      console.log(error);
+    });
+    input.value = ''
+    event.preventDefault()
+
+}
+alert("Add table success")
+location.reload();
+
+}
 
 // function sendCommand(event, robot_serial) {
 //     var input = document.getElementById("commandText")
@@ -166,6 +200,11 @@ function clearDataDevices() {
   const menuOptions1 = document.querySelector('#menu-control ul')
   while (menuOptions1.hasChildNodes()) {
     menuOptions1.removeChild(menuOptions1.firstChild);
+  }
+  const tbody1 = document.querySelector('#devices-manager tbody');
+  // Xóa các hàng hiện có trong tbody
+  while (tbody1.firstChild) {
+    tbody1.removeChild(tbody1.firstChild);
   }
 }
 
@@ -298,6 +337,50 @@ fetch('http://192.168.1.178:8001/api/v1/robots/', {
 
       // Thêm hàng vào tbody
       tbody.appendChild(row);
+    });
+    
+    
+    
+    const tbody1 = document.querySelector('#devices-manager tbody');
+    console.log(data);
+    
+    
+    var stt = 0;
+    // Tạo các hàng trong bảng từ dữ liệu nhận được
+    data["robots"].forEach(item => {
+      // Tạo một hàng mới
+      
+
+      const row = document.createElement('tr');
+
+      // Tạo các ô dữ liệu trong hàng
+      const cell1 = document.createElement('td');
+      cell1.textContent = stt + 1;
+      stt++;
+      row.appendChild(cell1);
+      
+      const cell3 = document.createElement('td');
+      cell3.textContent = item["serial"];
+      row.appendChild(cell3);
+
+      const cell2 = document.createElement('td');
+      cell2.textContent = item["name"];
+      row.appendChild(cell2);
+
+      const cell4 = document.createElement('td');
+      cell4.textContent = item["type"];
+      row.appendChild(cell4);
+
+      const cell6 = document.createElement('td');
+      cell6.textContent = item["created_at"];
+      row.appendChild(cell6);
+
+      const cell5 = document.createElement('td');
+      cell5.textContent = item["status"];
+      row.appendChild(cell5);
+
+      // Thêm hàng vào tbody
+      tbody1.appendChild(row);
     });
   })
   .catch(error => {
@@ -590,4 +673,141 @@ commandSection.addEventListener('click', function(event) {
   }
 });
 
-// * request
+// * request page
+
+// * location page
+
+fetch('http://192.168.1.178:8002/api/v1/tables/', {
+  method: 'GET',
+  headers: {
+    'Content-Type': 'application/json'
+  }
+})
+  .then(response => response.json())
+  .then(data => {
+    const tbody = document.querySelector('#list-location tbody');
+    console.log(data);
+    // Tạo các hàng trong bảng từ dữ liệu nhận được
+    var stt = 0;
+    data["tables"].forEach(item => {
+      // Tạo một hàng mới
+      const row = document.createElement('tr');
+
+      // Tạo các ô dữ liệu trong hàng
+      const cell1 = document.createElement('td');
+      cell1.textContent = stt+1;
+      stt++;
+      row.appendChild(cell1);
+
+      const cell2 = document.createElement('td');
+      cell2.textContent = item["name"];
+      row.appendChild(cell2);
+
+      const cell3 = document.createElement('td');
+      cell3.textContent = item["qr_code"];
+      row.appendChild(cell3);
+
+      const cell4 = document.createElement('td');
+      cell4.textContent = item["is_empty"];
+      row.appendChild(cell4);
+      row.addEventListener('click', function() {
+        // Hiển thị hộp thoại chỉnh sửa name, qr_code và có nút delete, save, cancel
+        const dialog = document.createElement('dialog');
+        dialog.innerHTML = `
+        <form method="dialog">
+          <h2>${item["name"]}</h2>
+          <h3>Name</h3>
+          <input type="text" value="${item["name"]}">
+          <h3>QR Code</h3>
+          <input type="text" value="${item["qr_code"]}">
+          <section class="actions">
+          <button value="delete" class="delete">Delete</button>
+          <button value="cancel">Cancel</button>
+          <button value="save" class="save">Save</button>
+          </section>
+
+        </form>
+        `;
+        document.body.appendChild(dialog);
+        dialog.classList.add('dialog');
+        dialog.showModal();
+        dialog.addEventListener('click', function(event) {
+          const target = event.target;
+          if (target.tagName === 'BUTTON') {
+            const value = target.value;
+            if (value === 'cancel') {
+              dialog.close();
+            } else if (value === 'save') {
+              const form = dialog.querySelector('form');
+              const name = form[0].value;
+              const qr_code = form[1].value;
+              const json = {
+                "name": name,
+                "qr_code": qr_code
+              };
+              fetch(`http://192.168.1.178:8002/api/v1/table/${item["qr_code"]}`, {
+                method: 'PUT',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(json)
+              })
+                .then(response => {
+                  if (response.ok) {
+                    console.log(`Updated table with id: ${item["name"]}`);
+                    // Cập nhật lại dữ liệu mới cho hàng
+                    item["name"] = name;
+                    item["qr_code"] = qr_code;
+                    // Cập nhật lại nội dung của các ô dữ liệu trong hàng
+                    cell2.textContent = name;
+                    cell3.textContent = qr_code;
+                    // Đóng hộp thoại
+                    dialog.close();
+                  } else {
+                    throw new Error('Error: ' + response.status);
+                  }
+                })
+                .catch(error => {
+                  // Xử lý lỗi trong trường hợp không thể gửi yêu cầu PUT
+                  console.log(`Error updating table with id: ${item["id"]}`, error);
+                });
+            } else if (value === 'delete') {
+              // Hiển thị hộp thoại xác nhận trước khi gửi yêu cầu DELETE
+              const confirmation = confirm('Do you want to delete table with id: ' + item["id"] + '?');
+              if (confirmation) {
+                // Gửi yêu cầu DELETE khi người dùng xác nhận
+                fetch(`http://192.168.1.178:8002/api/v1/table/${item["id"]}`, {
+                  method: 'DELETE',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  }
+                })
+                  .then(response => {
+                    // Xử lý kết quả từ yêu cầu DELETE
+                    if (response.ok) {
+                      console.log(`Deleted table with id: ${item["id"]}`);
+                      // Xóa hàng khỏi bảng
+                      tbody.removeChild(row);
+                      // Đóng hộp thoại
+                      dialog.close();
+                    } else {
+                      console.log(`Failed to delete table with id: ${item["id"]}`);
+                    }
+                  }
+                  )
+                  .catch(error => {
+                    // Xử lý lỗi trong trường hợp không thể gửi yêu cầu DELETE
+                    console.log(`Error deleting table with id: ${item["id"]}`, error);
+                  }
+                  );
+              }
+            }
+          }
+        });
+      } );
+        
+      tbody.appendChild(row);
+    }
+    );
+  })
+
