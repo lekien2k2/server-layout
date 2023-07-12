@@ -37,22 +37,26 @@ header {
     max-width: 100%;
     height: 10%;
     /* background-color: bisque; */
-    font-size: 30px;
-    color:gray;
+    font-size: 20px;
+    color:rgb(0, 0, 0);
     display: flex;
     flex-direction: row wrap;
-    border: rgb(208, 204, 204) solid ;
+    border: 1px rgb(238, 200, 255) solid ;
+    align-items: center;
 }
 
 .name-header h1{
     justify-content: center;
     align-items: center;
     font-size: 1.5em;
-    width: 90vh;
+    padding-left: 0.5em;
+    border-left: 1px rgb(0, 0, 0) solid ;
+    /* width: 90vh; */
 }
 
 .logo{
-    width: 15%;
+    width: 7em;
+    background-color: rgb(159, 152, 152);
 }
 .menu h2{
     font-size: 1em;
@@ -76,7 +80,7 @@ header {
     height: 100%;
     margin-right : 1em;
     /* background-color: antiquewhite; */
-    border: rgb(208, 204, 204) solid ;
+    border: 1px rgb(208, 204, 204) solid ;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -86,7 +90,7 @@ header {
     display: flex;
     width:  50%;
     height: 7%;
-    border: rgb(208, 204, 204) solid ;
+    border: 1px rgb(208, 204, 204) solid ;
     margin: 0.5em;
     font-size: 0.5em;
     font-weight: 700;
@@ -117,36 +121,42 @@ header {
 }
 .main h2{
     font-size: 0.7em;
+    color: rgb(56, 27, 86);
 }
 .chart{
     display: flex;
     /* border: #5a5a5a solid; */
     height: 10em; 
     flex-direction: row;
-    justify-content: space-between;
+    /* justify-content: space-between; */
+    flex-grow: 1;
 }
 .chart .request{
     display: flex;
     width: 32%;
-    border: rgb(208, 204, 204) solid ;
-    /* margin-right: 0.5em; */
+    border: 1px rgb(208, 204, 204) solid ;
+    margin-right: 0.5em;
+    flex-basis: 30%;
 }
 .chart .running{
     display: flex;
     width: 32%;
-    border: rgb(208, 204, 204) solid ;
-    /* margin-right: 0.5em; */
+    border: 1px rgb(208, 204, 204) solid ;
+    margin-right: 0.5em;
+    flex-basis: 30%;
 }
 .chart .devices{
     display: flex;
     width: 32%;
-    border: rgb(208, 204, 204) solid ;
+    border: 1px rgb(208, 204, 204) solid ;
     flex-direction: column;
+    flex-basis: 40%;
 }
 
 
 .chart .devices h2{
     display: flex;
+    margin: 0.1em;
 }
 
 .devices .list-table {
@@ -190,7 +200,7 @@ header {
 .console{
     display: flex;
     height: 100%;
-    border: rgb(208, 204, 204) solid ;  
+    border: 1px rgb(208, 204, 204) solid ;  
     margin-top: 0.5em;
     flex-direction: column;
 }
@@ -266,7 +276,7 @@ header {
     height: 10vh;
     display: flex;
     flex-direction: row ;
-    border: solid rgb(208, 204, 204);
+    border: 1px solid rgb(208, 204, 204);
     align-items: center;
     justify-content: center;
 }
@@ -276,15 +286,16 @@ header {
     width: 6em;
     height: 7vh;
     margin: 0.5em;
-    background-color: rgb(180, 180, 180);
+    background-color:  rgb(180, 180, 180);
     display: flex;
-    font-size: 1em;
+    font-size: 0.7em;
     cursor: pointer;
+    font-weight: bolder;
 
 }
 
 .ele-taskbar:hover{
-    font-size: 1.2em;
+    font-size: 0.8em;
 }
 
 .ele-taskbar.active{
@@ -307,6 +318,7 @@ header {
 }
 .add-device h3{
     font-size: 1em;
+    color: rgb(61, 12, 91);
 }
 .add-device .enter{
     display: flex;
@@ -315,15 +327,28 @@ header {
     /* border: solid rgb(208, 204, 204); */
     width: 10em;
     height: 7vh;
+    justify-content: center;
+    /* align-items: center; */
 }
+
+.add-device .enter input{
+    font-size: 0.7em;
+    cursor: auto;
+}
+.add-device .enter select{
+    font-size: 0.7em;
+    cursor: pointer;
+}
+
 .add-device button{
     width: 6em;
-    height: 4vh;
-    margin: auto;
+    /* height: 4vh; */
+    margin: 0 auto;
     background-color: rgb(255, 255, 255);
-    border: solid purple;
+    border: 2px solid purple;
     color: purple;
     font-size: 1em;
+    font-weight: 600;
     cursor: pointer;
 }
 
@@ -336,7 +361,7 @@ header {
     display: flex;
     width: 100%;
     height: 62vh;
-    border: solid rgb(208, 204, 204);
+    border: 1px solid rgb(208, 204, 204);
     margin: 0 auto;
     margin-top: 1vh;
     flex-direction: column ;
@@ -381,7 +406,7 @@ header {
   background-color: #f2f2f2;
 }
 
-.list-devices s .list-table tbody tr:nth-child(even) {
+.list-devices .list-table tbody tr:nth-child(even) {
   background-color: #f9f9f9;
 }
 
@@ -389,9 +414,9 @@ header {
   background-color: #f5f5f5;
 }
 
-.list-devices .list-table tbody tr button :hover {
+/* .list-devices .list-table tbody tr button :hover {
   color: #694242;
-}
+} */
 
 /* *TAB EDIT */
 
@@ -404,7 +429,7 @@ header {
     justify-content: center;
     position: relative;
     align-items: center;
-    border: solid rgb(208, 204, 204);
+    border: 1px solid rgb(208, 204, 204);
     height: 70vh;
     /* max-width: 50em; */
     display: flex;
@@ -434,10 +459,12 @@ header {
     font-weight: bold;
     color: black;
     border-radius: 5px;
+    border: 1px solid rgb(208, 204, 204);
+    padding: 0.3em;
     cursor: pointer;
 }
 .save-info-robo button:hover{
-    background-color: aquamarine;
+    /* background-color: aquamarine; */
     scale: 1.1;
 }
 
@@ -454,24 +481,36 @@ header {
 .menu-edit {
   display: flex;
   position: relative;
-  max-width: 10em;
-  max-height: 6vh;
-  margin: 0 auto;
+  width: 20em;
+  margin-left: 1em;
+  flex-direction: column;
+  border: 1px solid rgb(208, 204, 204);
+  height: 70vh;
 }
-
-.menuOptions {
-  display: none;
-  position: absolute;
-  background-color: #f9f9f9;
+.menu-edit h2 {
+  display: flex;
+  font-size: 1em;
+}
+.menuOptions1 {
+  display: flex;
+  margin-left: 1em;
+  /* background-color: #f9f9f9; */
   list-style-type: none;
   padding: 0;
   margin: 0;
   right: 0;
+  flex-direction: column;
+  overflow: auto;
 }
 
-.menuOptions li {
+.menuOptions1 li {
+  margin: 0.5vh 1vh;
+  display: flex;
   padding: 10px;
   cursor: pointer;
+  border: 1px solid rgb(208, 204, 204);
+  background-color: #f9f9f9;
+  
 }
 
 .toggleBtn {
@@ -495,25 +534,29 @@ header {
     flex-grow: 1;
     justify-content: center;
     align-items: center;
+    overflow: auto;
   }
 
   .layout-control{
     justify-content: center;
     position: relative;
     align-items: center;
-    border: solid rgb(208, 204, 204);
+    border: 1px solid rgb(208, 204, 204);
     height: 70vh;
     /* max-width: 50em; */
     display: flex;
     flex-direction: column;   
+    flex-grow: 1;
     /* flex-wrap: wrap; */
+    margin-right: 1em;
 }
 .layout-command{
   margin-top: 7vh;
   display: flex;
-  /* border: solid black; */
-  background-color: #e9e9e9;
-  width: 100%;
+  border: 1px solid #f3edf3;
+  /* background-color: #f3edf3; */
+  width: 51em;
+  height: 10vh;
   overflow: auto;
 }
 .layout-command .info-robo{
@@ -530,6 +573,7 @@ header {
   font-size: 1em;
   cursor: pointer;
   margin-left: 0.5em;
+  height: min-content;
 }
 #command {
   display: flex;
@@ -562,9 +606,11 @@ header {
   align-items: center;
 }
 .remote-robo button{
-  font-size: 1.4em;
+  font-size: 1em;
+  padding: 0.3em;
   border-radius: 5px;
   cursor: pointer;
+  border: 1px solid rgb(208, 204, 204);
 }
 .remote-robo textarea{
   font-size: 1.4em;
@@ -588,7 +634,7 @@ header {
   width: 7em;
   height: 7vh;
   margin: 0.5em;
-  background-color: rgb(180, 180, 180);
+  background-color:  rgb(180, 180, 180);
   display: flex;
   font-size: 0.7em;
   cursor: pointer;
@@ -607,7 +653,7 @@ header {
   display: none;
   flex-direction: row;
   height: 100%;
-  border: solid;
+  border: 1px solid rgb(208, 204, 204);
   margin-top: 0.5em;
 }
 
@@ -625,9 +671,8 @@ header {
 .add-location{
   display: flex;
   flex-direction: column;
-  right: 0em;
-  margin: 1em;
-  border: #5a5a5a solid;
+  margin: 1vh 1em;
+  border:  1px solid rgb(208, 204, 204);
   width: 15em;
   justify-content: center;
   align-items: center;
@@ -662,7 +707,7 @@ padding: 8px;
 background-color: #f2f2f2;
 }
 
-.layout-location s .list-table tbody tr:nth-child(even) {
+.layout-location .list-table tbody tr:nth-child(even) {
 background-color: #f9f9f9;
 }
 
@@ -674,7 +719,37 @@ background-color: #f5f5f5;
   font-size: 1em;
   margin-top: 1em;
 }
+#list-location tbody tr{
+  cursor: pointer;
+}
 
+#list-location .empty{
+  color: rgb(1, 255, 26);
+}
+#list-location .full{
+  color: rgb(0, 0, 0);
+}
+
+
+.enter button{
+  font-size: 1em;
+  margin-top: 1em;
+  /* margin-bottom: 1em; */
+  cursor: pointer;
+}
+
+.enter input{
+  font-size: 1em;
+  /* margin-top: 1em; */
+  /* margin-bottom: 1em; */
+  cursor: pointer;
+}
+.enter select{
+  font-size: 1em;
+  /* margin-top: 1em; */
+  /* margin-bottom: 1em; */
+  cursor: pointer;
+}
 .dialog {
   position: fixed;
   top: 50%;
@@ -734,7 +809,7 @@ background-color: #f5f5f5;
 .dialog button.delete{
   display: flex;
   /* margin-bottom: 0.5em; */
-  background-color: rgb(255, 31, 31);
+  background-color: rgb(255, 83, 83);
   margin-right: 10em;
   color: #ffffff;
   font-size: 1em;
@@ -744,6 +819,3 @@ background-color: #f5f5f5;
   padding: 5px 10px;
 }
 
-#list-location tbody tr{
-  cursor: pointer;
-}

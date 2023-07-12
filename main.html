@@ -109,13 +109,13 @@
             <section class="layout-devices">
             <section class="taskbar">
                 <div class="ele-taskbar" id="add-tab" onclick="openControl(event,'add','tab-device','ele-taskbar')" >
-                    <h2>ADD</h2>
+                    ADD
                 </div>
                 <div class="ele-taskbar" onclick ="openControl(event,'info','tab-device','ele-taskbar')" >
-                    <h2>EDIT INFO</h2>
+                    EDIT INFO
                 </div>
                 <div class="ele-taskbar" onclick=" openControl(event,'remote','tab-device','ele-taskbar')" >
-                    <h2>REMOTE</h2>
+                    REMOTE
                 </div>   
             </section>
             <section>
@@ -123,7 +123,7 @@
                     <section class="add-device">
                         <section class="enter">
                             <h3>Serial No</h3>
-                            <input type="text" id="serial-add" placeholder="nhập serial robot" >
+                            <input type="text" id="serial-add" placeholder="enter serial robot" >
                         </section>
                         <section class="enter">
                             <h3>Type</h3>
@@ -205,8 +205,9 @@
                     </section>
 
                     <div class="menu-edit" id="menu-edit">
-                        <button class="toggleBtn" >Selcect Device</button>
-                        <ul class="menuOptions">
+                        <h2>Select Device</h2>
+                        <!-- <button class="toggleBtn" >Selcect Device</button> -->
+                        <ul class="menuOptions1">
                         </ul>
                       </div>
                       
@@ -292,7 +293,7 @@
                 
                 <section class="layout-location">
                     <section class="add-location">
-                        <div class="menu-edit" id="menu-add">
+                        <div class="menu-control" id="menu-add">
                             <button class="toggleBtn" >Seclect Decive</button>
                             <ul class="menuOptions">
                             </ul>
@@ -375,5 +376,9 @@
 
     </footer>
     <script src="control.js"></script>
+    <!-- <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
+    <!-- <script src="sweetalert2.min.js"></script> -->
+<!-- <link rel="stylesheet" href="sweetalert2.min.css"> -->
+    <script type="module" src="./node_modules/sweetalert2/dist/sweetalert2.all.js"></script>
 </body>
 </html>

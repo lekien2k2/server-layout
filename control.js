@@ -1,14 +1,15 @@
 
-
+// import Swal from 'sweetalert';
+// import Swal from 'sweetalert2';
 //192.168.1.196:80
 //192.168.100.25:80
-
-
+// import Swal from 'sweetalert2'
+// const Swal = require('sweetalert2')
 //* websockets
 
 var client_id = Date.now()
 var websocket = new WebSocket(`ws://192.168.1.178:8000/ws/browser/${client_id}`);
-var data_update_decives
+var data_update_devices
 
 // setInterval(function() {
 //   sendMessage();
@@ -22,7 +23,7 @@ websocket.onmessage = function(event) {
             console.log(msg)
             clearDataDevices()
             processListDevice(msg["data"]["robots"]);
-            data_update_decives = msg["data"]["robots"];
+            data_update_devices = msg["data"]["robots"];
             break;
 
         case 'console_update':
@@ -63,93 +64,9 @@ websocket.onerror = function(error) {
 
 };
 
-function addRobo(event) {
-    var input = document.getElementById("serial-add")
-    var type = document.getElementById("type-add")
-    var json = {
-        "name":"",
-        "type": type.value,
-        "serial": input.value
-    }
-    if(input.value != ""){
-    fetch('http://192.168.1.178:8001/api/v1/robot/', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(json)
-  })
-    .then(response => {
-      if (response.ok) {
-        console.log('ADD DONE');
-      } else {
-        throw new Error('Error: ' + response.status);
-      }
-    })
-    .catch(error => {
-      // Xử lý lỗi trong trường hợp không thể truy cập API
-      console.log(error);
-    });
-    input.value = ''
-    event.preventDefault()
 
-}
-alert("Add robot success")
-location.reload();
 
-}
-function addLocation(event) {
-    var input = document.getElementById("name-location")
-    var type = document.getElementById("qr-code")
-    var json = {
-        "name":input.value,
-        "qr_code": type.value,
-    }
-    if(input.value != ""){
-    fetch('http://192.168.1.178:8002/api/v1/table/', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(json)
-  })
-    .then(response => {
-      if (response.ok) {
-        console.log('ADD DONE');
-      } else {
-        throw new Error('Error: ' + response.status);
-      }
-    })
-    .catch(error => {
-      // Xử lý lỗi trong trường hợp không thể truy cập API
-      console.log(error);
-    });
-    input.value = ''
-    event.preventDefault()
-
-}
-alert("Add table success")
-location.reload();
-
-}
-
-// function sendCommand(event, robot_serial) {
-//     var input = document.getElementById("commandText")
-//     msg = {
-//         "type": "browser_command",
-//         "data": {
-//             "robot_serial": robot_serial,
-//             "GOTO":"ansadhsa",
-//             "TAKE":"asdas",
-//             "GET":"asdasd"
-//         }
-//     }
-
-//     websocket.send(JSON.stringify(msg))
-//     input.value = ''
-//     event.preventDefault()
-// }
-
+// * control chat
 function loadMessage(data){
   const table = document.getElementById('console-chat');
 
@@ -177,13 +94,7 @@ function loadMessage(data){
     table.scrollTop = table.scrollHeight;
 }
 
-// function loadClientOnline(data){
-//     var client_online = document.getElementById('client_online')
-//     var ele = document.createElement('li')
-//     var content = document.createTextNode(data)
-//     ele.appendChild(content)
-//     client_online.appendChild(ele)
-// }
+
 
 function clearDataDevices() {
   // Lấy tham chiếu đến phần tử tbody trong bảng
@@ -211,40 +122,7 @@ function clearDataDevices() {
 
 
 function processListDevice(data) {
-  // Lấy tham chiếu đến phần tử tbody trong bảng
-  // const tbody = document.querySelector('#ListDevices tbody');
-  // console.log(data)
-  // // Tạo các hàng trong bảng từ dữ liệu nhận được
-  // data.forEach(item => {
-  //   // Tạo một hàng mới
-  //   const row = document.createElement('tr');
-
-  //   // Tạo các ô dữ liệu trong hàng
-  //   const cell1 = document.createElement('td');
-  //   cell1.textContent = item["serial"];
-  //   row.appendChild(cell1);
-
-  //   const cell2 = document.createElement('td');
-  //   cell2.textContent = item["name"];
-  //   row.appendChild(cell2);
-
-  //   const cell3 = document.createElement('td');
-  //   cell3.textContent = item["type"];
-  //   row.appendChild(cell3);
-
-  //   const cell4 = document.createElement('td');
-  //   cell4.textContent = item["created_at"];
-  //   row.appendChild(cell4);
-
-  //   const cell5 = document.createElement('td');
-  //   cell5.textContent = item["status"];
-  //   row.appendChild(cell5);
-
-  //   // Thêm hàng vào tbody
-  //   tbody.appendChild(row);
-  // });
-
-  // const menuOptions = document.querySelector('#menu-edit ul')
+ 
   const menu = document.querySelector('#menu-control ul')
   const menu1 = document.querySelector('#menu-add ul')
   data.forEach(item=>{
@@ -259,7 +137,9 @@ function processListDevice(data) {
   console.log(menu.textContent)
 }
 
-fetch('http://192.168.1.178:8001/api/v1/robots/', {
+// * get devices
+setInterval(function() {
+fetch('http://192.168.1.178:8001/api/v1/robots', {
   method: 'GET',
   headers: {
     'Content-Type': 'application/json'
@@ -267,6 +147,16 @@ fetch('http://192.168.1.178:8001/api/v1/robots/', {
 })
   .then(response => response.json())
   .then(data => {
+    const table = document.querySelector('#ListDevices tbody');
+  // Xóa các hàng hiện có trong tbody
+    while (table.hasChildNodes()) {
+    table.removeChild(table.firstChild);
+    }
+    const table2 = document.querySelector('#menu-edit ul');
+  // Xóa các hàng hiện có trong tbody
+    while (table2.hasChildNodes()) {
+    table2.removeChild(table2.firstChild);
+  }
     // Xử lý dữ liệu nhận được từ API
     const tbody = document.querySelector('#ListDevices tbody');
     console.log(data);
@@ -339,7 +229,11 @@ fetch('http://192.168.1.178:8001/api/v1/robots/', {
       tbody.appendChild(row);
     });
     
-    
+    const table1 = document.querySelector('#devices-manager tbody');
+  // Xóa các hàng hiện có trong tbody
+    while (table1.hasChildNodes()) {
+    table1.removeChild(table1.firstChild);
+  }
     
     const tbody1 = document.querySelector('#devices-manager tbody');
     console.log(data);
@@ -387,16 +281,52 @@ fetch('http://192.168.1.178:8001/api/v1/robots/', {
     // Xử lý lỗi trong trường hợp không thể truy cập API
     console.log(error);
   });
+},1000);
+
+//* add devices
+
+function addRobo(event) {
+  var input = document.getElementById("serial-add")
+  var type = document.getElementById("type-add")
+  var json = {
+      "name":"",
+      "type": type.value,
+      "serial": input.value
+  }
+  if(input.value != ""){
+  fetch('http://192.168.1.178:8001/api/v1/robot', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify(json)
+})
+  .then(response => {
+    if (response.status == 200) {
+      console.log('ADD DONE');
+      alert("Add robot success")
+    } else {
+      throw new Error('Error: ' + response.status);
+      // Swal.fire("Add robot fail")
+    }
+  })
+  .catch(error => {
+    // Xử lý lỗi trong trường hợp không thể truy cập API
+    console.log(error);
+  });
+  input.value = ''
+  event.preventDefault()
+
+}
+
+}
 
 
 
 
 
 
-
-
-
-//* =======================control=============================
+//* =======================control page=============================
 
 
 function openControl(evt, pageName, namecontent, name_link) {
@@ -464,7 +394,6 @@ toggleBtns.forEach(function(toggleBtn, index) {
     const target = event.target;
     const option = target.textContent;
     if (option) {
-      editInfoRobot(option);
       controlRobot(option);
       menuOption.style.display = 'none';
 
@@ -473,6 +402,18 @@ toggleBtns.forEach(function(toggleBtn, index) {
 });
 
 // *select data of option and send data
+
+const menuOptionsEdit = document.querySelector('#menu-edit ul');
+menuOptionsEdit.addEventListener('click', function(event) {
+  const target = event.target;
+  console.log("cos goij")
+  const option = target.textContent;
+  if (option) {
+    editInfoRobot(option);
+  }
+});
+
+
 function editInfoRobot(option) {
   // Xử lý thông tin robot dựa trên tùy chọn được chọn
   console.log('Option selected:', option);
@@ -486,19 +427,19 @@ function editInfoRobot(option) {
       var name = document.getElementById('edit-name');
         name.value = data["robot"]["name"];
       var name = document.getElementById('edit-home');
-        name.value = data["home_location"];
+        name.value = data["robot"]["home_location"];
       var name = document.getElementById('edit-ip-server');
-        name.value = data["ip_server"];
+        name.value = data["robot"]["ip_server"];
       var name = document.getElementById('edit-port');
-        name.value = data["port_server"]
+        name.value = data["robot"]["port_server"]
       var name = document.getElementById('edit-SSID-ST');
-        name.value = data["SSID_ST"];
+        name.value = data["robot"]["ssid_wifi"];
       var name = document.getElementById('edit-PASS-ST');
-        name.value = data["PASS_ST"];
+        name.value = data["robot"]["pass_wifi"];
       var name = document.getElementById('edit-SSID-AP');
-        name.value = data["SSID_AP"];
+        name.value = data["robot"]["ssid_ap"];
       var name = document.getElementById('edit-PASS-AP');
-        name.value = data["PASS_AP"];
+        name.value = data["robot"]["pass_ap"];
       console.log(data);
     })
   
@@ -506,66 +447,7 @@ function editInfoRobot(option) {
       // Xử lý lỗi trong trường hợp không thể truy cập API
       console.log(error);
     });
-// data_update_decives.forEach(json=>{
-//   if (json["serial"] == option){
-//       var name = document.getElementById('edit-name');
-//         name.value = json["name"];
-//       var name = document.getElementById('edit-home');
-//         name.value = json["home_location"];
-//       var name = document.getElementById('edit-ip-server');
-//         name.value = json["ip_server"];
-//       var name = document.getElementById('edit-port');
-//         name.value = json["port_server"]
-//       var name = document.getElementById('edit-SSID-ST');
-//         name.value = json["SSID_ST"];
-//       var name = document.getElementById('edit-PASS-ST');
-//         name.value = json["PASS_ST"];
-//       var name = document.getElementById('edit-SSID-AP');
-//         name.value = json["SSID_AP"];
-//       var name = document.getElementById('edit-PASS-AP');
-//         name.value = json["PASS_AP"];
-//   }
-//   });
-}
-
-
-
-// function saveEditInfo(event){
-//   const editInfo = document.querySelectorAll('#edit-info textarea')
-//   const serialRobo = document.querySelector('#serial-robo h3').textContent
-//   console.log(serialRobo)
-//   console.log(editInfo[0].value)
-//   var json = {
-//     "robot":{
-//       "serial":serialRobo,
-//       "name":editInfo[0].value,
-//       "home_location":editInfo[1].value,
-//       "ip_server":editInfo[2].value,
-//       "port_server":editInfo[3].value,
-//       "SSID_ST":editInfo[4].value,
-//       "PASS_ST":editInfo[5].value,
-//       "SSID_AP":editInfo[6].value,
-//       "PASS_AP":editInfo[7].value
-//     }
-//   }
-//   console.log(json)
-//   fetch('http://192.168.1.178:8001/api/v1/robot/'+serialRobo),{
-//     method: 'POST', // or 'PUT'
-//     body: JSON.stringify(json), // data can be `string` or {object}!
-    
-//   }
-//   .catch(error => {
-//     // Xử lý lỗi trong trường hợp không thể truy cập API
-//     console.log(error);
-//   });
-  
-
-//   // data_update_decives.forEach(item=>{
-//   //   if(serialRobo == item["serial"]){
-//   //     console.log("SAVE DONE")
-//   //   }
-//   // });
-// }
+  }
 
 function saveEditInfo(event) {
   event.preventDefault(); // Ngăn chặn hành vi mặc định của form (nếu có)
@@ -581,10 +463,10 @@ function saveEditInfo(event) {
       "home_location": editInfo[1].value,
       "ip_server": editInfo[2].value,
       "port_server": editInfo[3].value,
-      "SSID_ST": editInfo[4].value,
-      "PASS_ST": editInfo[5].value,
-      "SSID_AP": editInfo[6].value,
-      "PASS_AP": editInfo[7].value
+      "ssid_wifi": editInfo[4].value,
+      "pass_wifi": editInfo[5].value,
+      "ssid_ap": editInfo[6].value,
+      "pass_ap": editInfo[7].value
   };
   console.log(json);
 
@@ -596,11 +478,9 @@ function saveEditInfo(event) {
     body: JSON.stringify(json)
   })
     .then(response => {
-      if (response.ok) {
-        console.log('SAVE DONE');
-        alert('Save success');
-        document.location(reload)
-      } else {
+      if(response.OK) {
+        console.log(`Updated robot with serial: ${serialRobo}`);
+      } else {  
         throw new Error('Error: ' + response.status);
       }
     })
@@ -611,7 +491,7 @@ function saveEditInfo(event) {
 }
 
 
-// * add command and submit to remote decives
+// * add command and submit to remote devices
 function controlRobot(option){
   console.log('Option selected:', option);
   const serial = document.querySelector('#serial-robo-control h3');
@@ -632,7 +512,7 @@ commandControl.forEach(item=>{
   }
 });
 
-  data_update_decives.forEach(item=>{
+  data_update_devices.forEach(item=>{
     if(serialRobo == item["serial"]){
       console.log("SUBMIT DONE")
       var json = {
@@ -673,11 +553,46 @@ commandSection.addEventListener('click', function(event) {
   }
 });
 
-// * request page
+// * =======================request page=================================
 
 // * location page
 
-fetch('http://192.168.1.178:8002/api/v1/tables/', {
+function addLocation(event) {
+  var input = document.getElementById("name-location")
+  var type = document.getElementById("qr-code")
+  var json = {
+      "name":input.value,
+      "qr_code": type.value,
+  }
+  if(input.value != ""){
+  fetch('http://192.168.1.178:8002/api/v1/table', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify(json)
+})
+  .then(response => {
+    if (response.status == 200) {
+      console.log('ADD DONE');
+    } else {
+      throw new Error('Error: ' + response.status);
+    }
+  })
+  .catch(error => {
+    // Xử lý lỗi trong trường hợp không thể truy cập API
+    console.log(error);
+  });
+  input.value = ''
+  event.preventDefault()
+
+}
+alert("Add table success")
+
+}
+// *get api location
+setInterval(function() {
+fetch('http://192.168.1.178:8002/api/v1/tables', {
   method: 'GET',
   headers: {
     'Content-Type': 'application/json'
@@ -685,6 +600,11 @@ fetch('http://192.168.1.178:8002/api/v1/tables/', {
 })
   .then(response => response.json())
   .then(data => {
+    const table = document.querySelector('#list-location tbody');
+  // Xóa các hàng hiện có trong tbody
+    while (table.hasChildNodes()) {
+    table.removeChild(table.firstChild);
+  }
     const tbody = document.querySelector('#list-location tbody');
     console.log(data);
     // Tạo các hàng trong bảng từ dữ liệu nhận được
@@ -710,6 +630,11 @@ fetch('http://192.168.1.178:8002/api/v1/tables/', {
       const cell4 = document.createElement('td');
       cell4.textContent = item["is_empty"];
       row.appendChild(cell4);
+      if(item["is_empty"]){
+        row.className = "empty"
+      }else{
+        row.className = "full"
+      }
       row.addEventListener('click', function() {
         // Hiển thị hộp thoại chỉnh sửa name, qr_code và có nút delete, save, cancel
         const dialog = document.createElement('dialog');
@@ -754,7 +679,7 @@ fetch('http://192.168.1.178:8002/api/v1/tables/', {
               })
                 .then(response => {
                   if (response.ok) {
-                    console.log(`Updated table with id: ${item["name"]}`);
+                    console.log(`Updated table: ${item["name"]}`);
                     // Cập nhật lại dữ liệu mới cho hàng
                     item["name"] = name;
                     item["qr_code"] = qr_code;
@@ -769,14 +694,14 @@ fetch('http://192.168.1.178:8002/api/v1/tables/', {
                 })
                 .catch(error => {
                   // Xử lý lỗi trong trường hợp không thể gửi yêu cầu PUT
-                  console.log(`Error updating table with id: ${item["id"]}`, error);
+                  console.log(`Error updating table: ${item["name"]}`, error);
                 });
             } else if (value === 'delete') {
               // Hiển thị hộp thoại xác nhận trước khi gửi yêu cầu DELETE
-              const confirmation = confirm('Do you want to delete table with id: ' + item["id"] + '?');
+              const confirmation = confirm('Do you want to delete table: ' + item["name"] + '?');
               if (confirmation) {
                 // Gửi yêu cầu DELETE khi người dùng xác nhận
-                fetch(`http://192.168.1.178:8002/api/v1/table/${item["id"]}`, {
+                fetch(`http://192.168.1.178:8002/api/v1/table/${item["qr_code"]}`, {
                   method: 'DELETE',
                   headers: {
                     'Content-Type': 'application/json'
@@ -785,19 +710,19 @@ fetch('http://192.168.1.178:8002/api/v1/tables/', {
                   .then(response => {
                     // Xử lý kết quả từ yêu cầu DELETE
                     if (response.ok) {
-                      console.log(`Deleted table with id: ${item["id"]}`);
+                      console.log(`Deleted table: ${item["name"]}`);
                       // Xóa hàng khỏi bảng
                       tbody.removeChild(row);
                       // Đóng hộp thoại
                       dialog.close();
                     } else {
-                      console.log(`Failed to delete table with id: ${item["id"]}`);
+                      console.log(`Failed to delete table: ${item["name"]}`);
                     }
                   }
                   )
                   .catch(error => {
                     // Xử lý lỗi trong trường hợp không thể gửi yêu cầu DELETE
-                    console.log(`Error deleting table with id: ${item["id"]}`, error);
+                    console.log(`Error deleting table: ${item["name"]}`, error);
                   }
                   );
               }
@@ -810,4 +735,5 @@ fetch('http://192.168.1.178:8002/api/v1/tables/', {
     }
     );
   })
+},1000);
 
