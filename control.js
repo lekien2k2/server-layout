@@ -391,6 +391,7 @@ toggleBtns.forEach(function(toggleBtn, index) {
   });
 
   menuOption.addEventListener('click', function(event) {
+    
     const target = event.target;
     const option = target.textContent;
     if (option) {
@@ -498,6 +499,39 @@ function controlRobot(option){
   serial.textContent = option
 }
 
+const btnGoto = document.querySelector('#selectGoto');
+const menuGoto = document.querySelector('#menuGoto');
+
+
+
+btnGoto.addEventListener('click', function() {
+    console.log("co goi", menuGoto)
+    menuGoto.style.display = menuGoto.style.display === 'none' ? 'block' : 'none';
+  });
+
+  document.addEventListener('mousedown', function(event) {
+    const target = event.target;
+    if (!target.closest('.btnGoto') && !target.closest('.menuGoto')) {
+      menuGoto.style.display = 'none';
+    }
+  });
+
+  menuGoto.addEventListener('click', function(event) {
+    
+    const target = event.target;
+    const option = target.textContent;
+    if (option) {
+      addGoto(option);
+      menuGoto.style.display = 'none';
+
+    }
+  });
+
+  function addGoto(option) {
+    const nameGoto = document.getElementById('commandGoto');
+    nameGoto.value = option;
+  }
+
 
 function SubmitCommand(event){
   const serialRobo = document.querySelector('#serial-robo-control h3').textContent
@@ -508,7 +542,7 @@ commandControl.forEach(item=>{
   command = item.textContent;
   }
   else{
-    command = command + "," + item.textContent;
+    command = command  + item.textContent;
   }
 });
 
@@ -600,6 +634,11 @@ fetch('http://192.168.1.178:8002/api/v1/tables', {
 })
   .then(response => response.json())
   .then(data => {
+    const menuGoto = document.querySelector('#menuGoto ul');
+  // Xóa các hàng hiện có trong tbody
+    while (menuGoto.hasChildNodes()) {
+    menuGoto.removeChild(menuGoto.firstChild);
+  }
     const table = document.querySelector('#list-location tbody');
   // Xóa các hàng hiện có trong tbody
     while (table.hasChildNodes()) {
@@ -610,6 +649,9 @@ fetch('http://192.168.1.178:8002/api/v1/tables', {
     // Tạo các hàng trong bảng từ dữ liệu nhận được
     var stt = 0;
     data["tables"].forEach(item => {
+      const option = document.createElement('li');
+      option.textContent = item["qr_code"];
+      menuGoto.appendChild(option);
       // Tạo một hàng mới
       const row = document.createElement('tr');
 

@@ -229,8 +229,18 @@
                             <section class="control-robo">
                                 <section class="remote-robo" id="goto">
                                     <h2>GOTO:</h2>
-                                    <textarea id="commandGoto" rows="1" cols="20" onkeydown="handleEnterKey(event)"></textarea>
+                                    <textarea id="commandGoto" rows="1" cols="15" onkeydown="handleEnterKey(event)"></textarea>
+                                    <button id="selectGoto" class="select-Goto" style="background-image: url(./img/dots.png); background-size: cover;background-position: center;width: 1em; height: 5vh;"></button>
+                                    <section id="menuGoto"  class="menuGoto">
+                        
+                                        <ul  class="menuGoto"></ul>
+                                    </section>
                                 </section>
+                                <!-- <section class="remote-robo" id="clear">
+                                    <button id="selectGoto" class="select-Goto">w</button>
+                                    <ul  class="menuGoto"></ul>
+                                </section> -->
+                               
                                 <section class="remote-robo" id="take">
                                     <button onclick="addCommand(this.innerText + ':')">TAKE</button>
                                 </section>
@@ -239,6 +249,12 @@
                                 </section>
                                 <section class="remote-robo" id="pause">
                                     <button onclick="addCommand(this.innerText + ':')">PAUSE</button>
+                                </section>
+                                <section class="remote-robo" id="fw">
+                                    <button onclick="addCommand(this.innerText + ':')">FW</button>
+                                </section>
+                                <section class="remote-robo" id="rw">
+                                    <button onclick="addCommand(this.innerText + ':')">RW</button>
                                 </section>
                                 <section class="remote-robo" id="run">
                                     <button onclick="addCommand(this.innerText + ':')">RUN</button>

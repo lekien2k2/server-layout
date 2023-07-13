@@ -41,7 +41,7 @@ header {
     color:rgb(0, 0, 0);
     display: flex;
     flex-direction: row wrap;
-    border: 1px rgb(238, 200, 255) solid ;
+    border: 1px rgb(174, 0, 255) solid ;
     align-items: center;
 }
 
@@ -599,11 +599,12 @@ header {
 
 .remote-robo{
   display: flex;
-  max-width: 15em;
+  max-width: 17em;
   margin: 3em;
   height: 3vh;
   justify-content: center;
   align-items: center;
+  /* flex-direction: row; */
 }
 .remote-robo button{
   font-size: 1em;
@@ -613,13 +614,54 @@ header {
   border: 1px solid rgb(208, 204, 204);
 }
 .remote-robo textarea{
+  display: flex;
   font-size: 1.4em;
   border-radius: 5px;
 }
 .remote-robo h2{
+  display: flex;
   font-size: 1.4em;
+  position: relative;
 }
 
+
+.select-Goto{
+  display: block;
+  /* flex-direction: row; */
+  margin: 1em;
+  /* background-color: #5a5a5a; */
+  justify-content: center;
+  align-items: center;
+}
+#menuGoto{
+  display: none;
+  position: absolute;
+  flex-direction: column;
+  margin: 1em;
+  /* background-color: #353333; */
+  justify-content: center;
+  align-items: center;
+}
+
+.menuGoto{
+  /* display: none; */
+  position: absolute;
+  flex-direction: column;
+  margin: 1em;
+  /* background-color: #353333; */
+  justify-content: center;
+  align-items: center;
+}
+
+.menuGoto li{
+  display: flex;
+  cursor: pointer;
+  border: 1px solid rgb(208, 204, 204);
+  font-size: 1em;
+  background-color: #f9f9f9;
+  color: rgb(0, 0, 0);
+  margin: 0.5vh 0em;
+}
 
 /* *==============REQUEST================== */
 
