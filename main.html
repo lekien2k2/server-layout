@@ -169,7 +169,7 @@
                     
                 </div>
 
-
+                
                 <div class="tab-device" id="info">
                     <section id="edit-info" class="edit-info">
                         
@@ -177,6 +177,7 @@
                             <h2>SERIAL:</h2>
                             <h3></h3>
                         </section>
+                        <section class="control-robo">
                             <section class="info-robo" id="name-robo">
                                 <h2>Robot Name:</h2>
                                 <textarea id="edit-name" rows="1" cols="15"></textarea>
@@ -209,7 +210,8 @@
                                 <h2>PASS_AP</h2>
                                 <textarea id="edit-PASS-AP" rows="1" cols="15"></textarea>
                             </section>
-                        
+                        </section>
+           
                         <section class="save-info-robo" id="save-info-robo">
                             <button id="save-info" onclick="saveEditInfo(event)">SAVE</button>
                         </section>
@@ -326,8 +328,8 @@
                             <!-- <ul class="menuOptions"> -->
                             <!-- </ul> -->
                             <h3 style="margin-bottom: 1vh; color: black;">Auto Add Location</h3>
-                            <h4>Chosse the Robot</h4>
-                            <select name="chosse the robot" id="addLocation">
+                            <h4>Choose the Robot</h4>
+                            <select name="choose the robot" id="addLocation">
                             </select>
                           </div>
                           <button class="run-add" onclick="autoAddLocation()">Auto add</button>

@@ -41,7 +41,7 @@ header {
     color:rgb(0, 0, 0);
     display: flex;
     flex-direction: row wrap;
-    border: 1px rgb(13, 0, 255) solid ;
+    border: 1px rgb(10, 0, 255) solid ;
     align-items: center;
 }
 
@@ -99,14 +99,14 @@ header {
     cursor: pointer;
 }
 .name-menu:hover{
-    border: 2px solid rgb(110, 0, 255);
-    color: rgb(110, 0, 255);
+    border: 2px solid rgb(10, 0, 255);
+    color: rgb(10, 0, 255);
     font-weight: bolder;
     font-size: 0.55em;
 }
 .name-menu.active {
-    border: 2px solid rgb(110, 0, 255);
-    color: rgb(110, 0, 255);
+    border: 2px solid rgb(10, 0, 255);
+    color: rgb(10, 0, 255);
     font-weight: bolder;
     font-size: 0.55em;
   }
@@ -303,7 +303,7 @@ header {
 
 .ele-taskbar.active{
     color: white;
-    background-color: rgb(120, 0, 255);
+    background-color: rgb(10, 0, 255);
 }
 .tab-device{
     display: none;
@@ -348,8 +348,8 @@ header {
     /* height: 4vh; */
     margin: 0 auto;
     background-color: rgb(255, 255, 255);
-    border: 2px solid rgb(140, 0, 255);
-    color: rgb(140, 0, 255);
+    border: 2px solid rgb(10, 0, 255);
+    color: rgb(10, 0, 255);
     font-size: 1em;
     font-weight: 600;
     cursor: pointer;
@@ -436,9 +436,12 @@ header {
     height: 70vh;
     /* max-width: 50em; */
     display: flex;
-    flex-direction: row wrap;   
-    flex-wrap: wrap;
+    /* flex-direction: row wrap;   
+    flex-wrap: wrap; */
     overflow: auto;
+    flex-direction: column;   
+    flex-grow: 1;
+
 }
 
 .serial-robo{
@@ -712,7 +715,7 @@ header {
 
 .ele-taskbar-request.active{
   color: white;
-  background-color: rgb(120, 0, 255);
+  background-color: rgb(10, 0, 255);
 }
 .tab-request{
   display: none;
