@@ -5,11 +5,14 @@
 //192.168.100.25:80
 // import Swal from 'sweetalert2'
 // const Swal = require('sweetalert2')
+// import Md from 'reactjs-md-editor';
+// import React from 'react';
 //* websockets
-
+// md.render('# your markdown string');
 var client_id = Date.now()
-var websocket = new WebSocket(`ws://192.168.1.178:8000/ws/browser/${client_id}`);
+var websocket = new WebSocket(`ws://192.168.1.189:8000/ws/browser/${client_id}`);
 var data_update_devices
+var ip = "http://192.168.1.189" 
 
 // setInterval(function() {
 //   sendMessage();
@@ -45,10 +48,15 @@ websocket.onclose = function(event) {
   console.log('Mất kết nối với máy chủ.');
 
   // Hiển thị thông báo
-  alert('Mất kết nối với máy chủ.');
+  Swal.fire('Mất kết nối với máy chủ.')
 
   // Tải lại trang (tuỳ chọn)
-  location.reload();
+  .then((result) => {
+    /* Read more about isConfirmed, isDenied below */
+    if (result.isConfirmed) {
+    location.reload()
+    }});
+
 
   // Hoặc tự động kết nối lại
   // setTimeout(function() {
@@ -59,6 +67,14 @@ websocket.onclose = function(event) {
 // Hàm xử lý khi có lỗi xảy ra
 websocket.onerror = function(error) {
   console.error('Lỗi kết nối: ', error);
+  Swal.fire('Lỗi kết nối: ', error)
+
+  // Tải lại trang (tuỳ chọn)
+  .then((result) => {
+    /* Read more about isConfirmed, isDenied below */
+    if (result.isConfirmed) {
+    location.reload()
+    }});
 };
 
 
@@ -98,39 +114,44 @@ function loadMessage(data){
 
 function clearDataDevices() {
   // Lấy tham chiếu đến phần tử tbody trong bảng
-  const tbody = document.querySelector('#ListDevices tbody');
-  // Xóa các hàng hiện có trong tbody
-  while (tbody.firstChild) {
-    tbody.removeChild(tbody.firstChild);
-  }
+  // const tbody = document.querySelector('#ListDevices tbody');
+  // // Xóa các hàng hiện có trong tbody
+  // while (tbody.firstChild) {
+  //   tbody.removeChild(tbody.firstChild);
+  // }
 
-  const menuOptions = document.querySelector('#menu-edit ul')
-  while (menuOptions.hasChildNodes()) {
-    menuOptions.removeChild(menuOptions.firstChild);
-  }
+  // const menuOptions = document.querySelector('#menu-edit ul')
+  // while (menuOptions.hasChildNodes()) {
+  //   menuOptions.removeChild(menuOptions.firstChild);
+  // }
   const menuOptions1 = document.querySelector('#menu-control ul')
   while (menuOptions1.hasChildNodes()) {
     menuOptions1.removeChild(menuOptions1.firstChild);
   }
-  const tbody1 = document.querySelector('#devices-manager tbody');
-  // Xóa các hàng hiện có trong tbody
-  while (tbody1.firstChild) {
-    tbody1.removeChild(tbody1.firstChild);
+  const menuOptions2 = document.querySelector('#menuAdd select')
+  while (menuOptions2.hasChildNodes()) {
+    menuOptions2.removeChild(menuOptions2.firstChild);
   }
+  // const tbody1 = document.querySelector('#devices-manager tbody');
+  // // Xóa các hàng hiện có trong tbody
+  // while (tbody1.firstChild) {
+  //   tbody1.removeChild(tbody1.firstChild);
+  // }
 }
 
 
 
 function processListDevice(data) {
- 
+ console.log("co goi proccess"+data)
   const menu = document.querySelector('#menu-control ul')
-  const menu1 = document.querySelector('#menu-add ul')
+  const menu1 = document.querySelector('#menuAdd select')
   data.forEach(item=>{
     const option1 = document.createElement('li');
     option1.textContent = item["serial"];
     menu.appendChild(option1)
     // console.log(option)
-    const option2 = document.createElement('li');
+    const option2 = document.createElement('option');
+    option2.value = item["serial"];
     option2.textContent = item["serial"];
     menu1.appendChild(option2)
   });
@@ -139,7 +160,7 @@ function processListDevice(data) {
 
 // * get devices
 setInterval(function() {
-fetch('http://192.168.1.178:8001/api/v1/robots', {
+fetch(ip +':8001/api/v1/robots', {
   method: 'GET',
   headers: {
     'Content-Type': 'application/json'
@@ -194,13 +215,20 @@ fetch('http://192.168.1.178:8001/api/v1/robots', {
 
       const cell6 = document.createElement('td');
       const deleteButton = document.createElement('button');
-      deleteButton.textContent = "Delete";
+      deleteButton.textContent = "Remove";
       deleteButton.addEventListener('click', function() {
         // Hiển thị hộp thoại xác nhận trước khi gửi yêu cầu DELETE
-        const confirmation = confirm('Do you want to delete robot with serial: ' + item["serial"] + '?');
-        if (confirmation) {
-          // Gửi yêu cầu DELETE khi người dùng xác nhận
-          fetch(`http://192.168.1.178:8001/api/v1/robot/${item["serial"]}`, {
+        Swal.fire({
+          title: 'Are you sure?',
+          text: "You won't be able to revert this!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#d33',
+          // cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            fetch(ip+`:8001/api/v1/robot/${item["serial"]}`, {
             method: 'DELETE',
             headers: {
               'Content-Type': 'application/json'
@@ -220,7 +248,17 @@ fetch('http://192.168.1.178:8001/api/v1/robots', {
               // Xử lý lỗi trong trường hợp không thể gửi yêu cầu DELETE
               console.log(`Error deleting robot with serial: ${item["serial"]}`, error);
             });
+            Swal.fire(
+              'Deleted!',
+              'Your file has been deleted.',
+              'success'
+            )
         }
+           
+            
+          }
+        )
+          
       });
       cell6.appendChild(deleteButton);
       row.appendChild(cell6);
@@ -294,7 +332,7 @@ function addRobo(event) {
       "serial": input.value
   }
   if(input.value != ""){
-  fetch('http://192.168.1.178:8001/api/v1/robot', {
+  fetch(ip+':8001/api/v1/robot', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json'
@@ -304,7 +342,7 @@ function addRobo(event) {
   .then(response => {
     if (response.status == 200) {
       console.log('ADD DONE');
-      alert("Add robot success")
+      Swal.fire("Add robot success")
     } else {
       throw new Error('Error: ' + response.status);
       // Swal.fire("Add robot fail")
@@ -371,16 +409,14 @@ window.onload = function() {
 
 
 
-// *MENU of layout edit and remote
-const toggleBtns = document.querySelectorAll('.toggleBtn');
-const menuOptions = document.querySelectorAll('.menuOptions');
+// *MENU of layout remote
+const toggleBtn = document.querySelector('#menu-control .toggleBtn');
+const menuOption = document.querySelector('#menu-control .menuOptions');
 
-toggleBtns.forEach(function(toggleBtn, index) {
-  const menuOption = menuOptions[index];
 
   toggleBtn.addEventListener('click', function() {
     console.log("co goi", menuOption)
-    menuOption.style.display = menuOption.style.display === 'none' ? 'block' : 'none';
+    menuOption.style.display = menuOption.style.display === 'none' ? 'flex' : 'none';
   });
 
   document.addEventListener('mousedown', function(event) {
@@ -400,7 +436,6 @@ toggleBtns.forEach(function(toggleBtn, index) {
 
     }
   });
-});
 
 // *select data of option and send data
 
@@ -420,7 +455,7 @@ function editInfoRobot(option) {
   console.log('Option selected:', option);
   const serial = document.querySelector('#serial-robo h3');
   serial.textContent = option;
-  fetch ('http://192.168.1.178:8001/api/v1/robot/'+option)
+  fetch (ip+':8001/api/v1/robot/'+option)
 
     .then(response => response.json())
     .then(data => {
@@ -471,7 +506,7 @@ function saveEditInfo(event) {
   };
   console.log(json);
 
-  fetch('http://192.168.1.178:8001/api/v1/robot/' + serialRobo, {
+  fetch(ip+':8001/api/v1/robot/' + serialRobo, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json'
@@ -479,15 +514,24 @@ function saveEditInfo(event) {
     body: JSON.stringify(json)
   })
     .then(response => {
-      if(response.OK) {
-        console.log(`Updated robot with serial: ${serialRobo}`);
+      if(response.ok) {
+        Swal.fire(`Updated robot with serial: ${serialRobo}`);
       } else {  
+        Swal.fire({
+          title:'Warning!',
+          text: `Failed to update robot ${editInfo["name"]}: ${response.status}`,
+          icon: 'warning',
+      });
         throw new Error('Error: ' + response.status);
       }
     })
     .catch(error => {
       // Xử lý lỗi trong trường hợp không thể truy cập API
-      console.log(error);
+      Swal.fire({
+        title:'Error!',
+        text: `Failed to update robot ${editInfo["name"]}: ${error}`,
+        icon: 'error',
+    });
     });
 }
 
@@ -519,7 +563,7 @@ btnGoto.addEventListener('click', function() {
   menuGoto.addEventListener('click', function(event) {
     
     const target = event.target;
-    const option = target.textContent;
+    const option = target.textContent.split("\n")[1]
     if (option) {
       addGoto(option);
       menuGoto.style.display = 'none';
@@ -599,7 +643,7 @@ function addLocation(event) {
       "qr_code": type.value,
   }
   if(input.value != ""){
-  fetch('http://192.168.1.178:8002/api/v1/table', {
+  fetch(ip+':8002/api/v1/table', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json'
@@ -621,12 +665,12 @@ function addLocation(event) {
   event.preventDefault()
 
 }
-alert("Add table success")
+Swal.fire("Add table success")
 
 }
 // *get api location
 setInterval(function() {
-fetch('http://192.168.1.178:8002/api/v1/tables', {
+fetch(ip+':8002/api/v1/tables', {
   method: 'GET',
   headers: {
     'Content-Type': 'application/json'
@@ -650,7 +694,8 @@ fetch('http://192.168.1.178:8002/api/v1/tables', {
     var stt = 0;
     data["tables"].forEach(item => {
       const option = document.createElement('li');
-      option.textContent = item["qr_code"];
+      option.textContent = item["name"] +": \n";
+      option.textContent += item["qr_code"];
       menuGoto.appendChild(option);
       // Tạo một hàng mới
       const row = document.createElement('tr');
@@ -679,97 +724,119 @@ fetch('http://192.168.1.178:8002/api/v1/tables', {
       }
       row.addEventListener('click', function() {
         // Hiển thị hộp thoại chỉnh sửa name, qr_code và có nút delete, save, cancel
-        const dialog = document.createElement('dialog');
-        dialog.innerHTML = `
-        <form method="dialog">
-          <h2>${item["name"]}</h2>
-          <h3>Name</h3>
-          <input type="text" value="${item["name"]}">
-          <h3>QR Code</h3>
-          <input type="text" value="${item["qr_code"]}">
-          <section class="actions">
-          <button value="delete" class="delete">Delete</button>
-          <button value="cancel">Cancel</button>
-          <button value="save" class="save">Save</button>
-          </section>
-
-        </form>
-        `;
-        document.body.appendChild(dialog);
-        dialog.classList.add('dialog');
-        dialog.showModal();
-        dialog.addEventListener('click', function(event) {
-          const target = event.target;
-          if (target.tagName === 'BUTTON') {
-            const value = target.value;
-            if (value === 'cancel') {
-              dialog.close();
-            } else if (value === 'save') {
-              const form = dialog.querySelector('form');
-              const name = form[0].value;
-              const qr_code = form[1].value;
-              const json = {
-                "name": name,
-                "qr_code": qr_code
-              };
-              fetch(`http://192.168.1.178:8002/api/v1/table/${item["qr_code"]}`, {
-                method: 'PUT',
-                headers: {
-                  'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(json)
-              })
-                .then(response => {
-                  if (response.ok) {
-                    console.log(`Updated table: ${item["name"]}`);
-                    // Cập nhật lại dữ liệu mới cho hàng
-                    item["name"] = name;
-                    item["qr_code"] = qr_code;
-                    // Cập nhật lại nội dung của các ô dữ liệu trong hàng
-                    cell2.textContent = name;
-                    cell3.textContent = qr_code;
-                    // Đóng hộp thoại
-                    dialog.close();
-                  } else {
-                    throw new Error('Error: ' + response.status);
-                  }
-                })
-                .catch(error => {
-                  // Xử lý lỗi trong trường hợp không thể gửi yêu cầu PUT
-                  console.log(`Error updating table: ${item["name"]}`, error);
-                });
-            } else if (value === 'delete') {
-              // Hiển thị hộp thoại xác nhận trước khi gửi yêu cầu DELETE
-              const confirmation = confirm('Do you want to delete table: ' + item["name"] + '?');
-              if (confirmation) {
-                // Gửi yêu cầu DELETE khi người dùng xác nhận
-                fetch(`http://192.168.1.178:8002/api/v1/table/${item["qr_code"]}`, {
+        Swal.fire({
+          title: item["name"],
+          html: `
+            <h3>Table Name</h3>
+            <input type="text" value="${item["name"]}" style = "font-size:1em;">
+            <h3>QR Code</h3>
+            <input type="text" value="${item["qr_code"]}"  style="font-size:1em;">
+          `,
+          showCancelButton: true,
+          confirmButtonText: 'Save',
+          cancelButtonText: 'Cancel',
+          showLoaderOnConfirm: true,
+          preConfirm: () => {
+            const name = Swal.getPopup().querySelector('input[type="text"]:nth-of-type(1)').value;
+            const qr_code = Swal.getPopup().querySelector('input[type="text"]:nth-of-type(2)').value;
+            const json = {
+              "name": name,
+              "qr_code": qr_code
+            };
+            return fetch(ip+`:8002/api/v1/table/${item["qr_code"]}`, {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(json)
+            })
+            .then(response => {
+              if (response.status == 200) {
+                console.log(`Updated table: ${item["name"]}`);
+                // Cập nhật lại dữ liệu mới cho hàng
+                item["name"] = name;
+                item["qr_code"] = qr_code;
+                // Cập nhật lại nội dung của các ô dữ liệu trong hàng
+                cell2.textContent = name;
+                cell3.textContent = qr_code;
+                return true;
+              } else {
+                throw new Error('Error: ' + response.status);
+              }
+            })
+            .catch(error => {
+              // Xử lý lỗi trong trường hợp không thể gửi yêu cầu PUT
+              console.log(`Error updating table: ${item["name"]}`, error);
+              Swal.showValidationMessage('Error updating table');
+              return false;
+            });
+          },
+          showCloseButton: true,
+          allowOutsideClick: () => !Swal.isLoading(),
+          showDenyButton: true,
+          denyButtonText: 'Delete',
+          deleteButtonColor: '#d33',
+          reverseButtons: true,
+          focusdelete: true
+        })
+        .then(result => {
+          if (result.isConfirmed) {
+            Swal.fire(
+              'Saved!',
+              `Table ${item["name"]} has been updated.`,
+              'success'
+            );
+          } else if (result.dismiss === Swal.DismissReason.deny) {
+            Swal.fire({
+              title: `Do you want to delete table: ${item["name"]}?`,
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonText: 'Delete',
+              cancelButtonText: 'Cancel',
+              reverseButtons: true,
+              focusCancel: true,
+              preConfirm: () => {
+                  fetch(ip+`:8002/api/v1/table/${item["qr_code"]}`, {
                   method: 'DELETE',
                   headers: {
                     'Content-Type': 'application/json'
                   }
                 })
-                  .then(response => {
-                    // Xử lý kết quả từ yêu cầu DELETE
-                    if (response.ok) {
-                      console.log(`Deleted table: ${item["name"]}`);
-                      // Xóa hàng khỏi bảng
-                      tbody.removeChild(row);
-                      // Đóng hộp thoại
-                      dialog.close();
-                    } else {
-                      console.log(`Failed to delete table: ${item["name"]}`);
-                    }
+                .then(response => {
+                  
+                  if (response.status == 204) {
+                    console.log(`Deleted table: ${item["name"]}`);
+                    // Xóa hàng khỏi bảng
+                    // tbody.removeChild(row);
+                    Swal.fire(
+                      'Deleted!',
+                      `Table ${item["name"]} has been deleted.`,
+                      'success'
+                    );
+                  } else {
+                    console.log(`Failed to delete table: ${item["name"]}`);
+                    Swal.fire(
+                      'Error!',
+                      `Failed to delete table ${item["name"]}.`, response.status,
+                      'error'
+                    );
                   }
-                  )
-                  .catch(error => {
-                    // Xử lý lỗi trong trường hợp không thể gửi yêu cầu DELETE
-                    console.log(`Error deleting table: ${item["name"]}`, error);
-                  }
+                })
+                .catch(error => {
+                  // Xử lý lỗi trong trường hợp không thể gửi yêu cầu DELETE
+                  console.log(`Error deleting table: ${item["name"]}`, error);
+                  Swal.fire(
+                    'Error!',
+                    `Error deleting table ${item["name"]}.`,
+                    'error'
                   );
+                });
               }
-            }
+            });
           }
+        })
+        .catch(error => {
+          console.log('Error:', error);
         });
       } );
         
@@ -779,3 +846,170 @@ fetch('http://192.168.1.178:8002/api/v1/tables', {
   })
 },1000);
 
+
+// *MENU of layout remote
+const optionAdd = document.getElementById('addLocation');
+  function autoAddLocation(){
+    var json = {
+      "type":"browser_command",
+      "data":{
+        "serial":optionAdd.value,
+        "command":"addLocation"
+      },
+    }
+    websocket.send(JSON.stringify(json))
+    console.log(json)
+  }
+
+
+
+// * get api order
+setInterval(function() {
+  fetch(ip+':8003/api/v1/orders', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => response.json())
+    .then(data => {
+      const table = document.querySelector('#orderTable tbody');
+    // Xóa các hàng hiện có trong tbody
+      while (table.hasChildNodes()) {
+      table.removeChild(table.firstChild);
+    }
+      const tbody = document.querySelector('#orderTable tbody');
+      console.log(data);
+      // Tạo các hàng trong bảng từ dữ liệu nhận được
+      var stt = 0;
+      data["orders"].forEach(item => {
+       
+        // Tạo một hàng mới
+        const row = document.createElement('tr');
+  
+        // Tạo các ô dữ liệu trong hàng
+        const cell1 = document.createElement('td');
+        cell1.textContent = stt+1;
+        stt++;
+        row.appendChild(cell1);
+  
+        const cell2 = document.createElement('td');
+        cell2.textContent = item["order_id"];
+        row.appendChild(cell2);
+  
+        const cell3 = document.createElement('td');
+        cell3.textContent = item["table_qr"];
+        row.appendChild(cell3);
+  
+        const cell4 = document.createElement('td');
+        cell4.textContent = item["created_at"];
+        row.appendChild(cell4);
+
+        const cell5 = document.createElement('td');
+        cell5.textContent = item["updated_at"];
+        row.appendChild(cell5);
+
+        const cell6 = document.createElement('td');
+        cell6.textContent = item["status"];
+        row.appendChild(cell6);
+        if(item["status"] == "done"){
+          row.style.color = "green"
+        }else if(item["status"] == "waiting"){
+          row.style.color = "black"
+        }else{
+          row.style.color = "red"
+        }
+        
+          
+        tbody.appendChild(row);
+      }
+      );
+    })
+  },1000);
+
+
+// *chart order
+
+const xValues = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
+const yValues = [7,8,8,9,9,9,10,11,14,14,15];
+
+new Chart("webAppChart", {
+  type: "line",
+  data: {
+    labels: xValues,
+    datasets: [{
+      fill: false,
+      lineTension: 0,
+      backgroundColor: "rgba(0,0,255,1.0)",
+      borderColor: "rgba(0,0,255,0.1)",
+      data: yValues
+    }]
+  },
+  options: {
+    legend: {display: false},
+    scales: {
+      yAxes: [{ticks: {min: 6, max:16}}],
+    }
+  }
+});
+new Chart("runningChart", {
+  type: "line",
+  data: {
+    labels: xValues,
+    datasets: [{
+      fill: false,
+      lineTension: 0,
+      backgroundColor: "rgba(0,0,255,1.0)",
+      borderColor: "rgba(0,0,255,0.1)",
+      data: yValues
+    }]
+  },
+  options: {
+    legend: {display: false},
+    scales: {
+      yAxes: [{ticks: {min: 6, max:16}}],
+    }
+  }
+});
+new Chart("requestChart", {
+  type: "line",
+  data: {
+    labels: xValues,
+    datasets: [{
+      fill: false,
+      lineTension: 0,
+      backgroundColor: "rgba(0,0,255,1.0)",
+      borderColor: "rgba(0,0,255,0.1)",
+      data: yValues
+    }]
+  },
+  options: {
+    legend: {display: false},
+    scales: {
+      yAxes: [{ticks: {min: 6, max:16}}],
+    }
+  }
+});
+
+// *chart order
+// using md from react-md
+// import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+// LineChart = React.createClass({
+//   render () {
+//     return (
+//       <ResponsiveContainer width="100%" height="100%">
+//       <LineChart width={600} height={300} data={data}
+//             margin={{top: 5, right: 30, left: 20, bottom: 5}}>
+//        <XAxis dataKey="name"/>
+//        <YAxis/>
+//        <CartesianGrid strokeDasharray="3 3"/>
+//        <Tooltip/>
+//        <Legend />
+//        <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{r: 8}}/>
+//        <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+//       </LineChart>
+//       </ResponsiveContainer>
+//     );
+//     document.getElementById("chart-order").appendChild(LineChart);
+//   }
+// })

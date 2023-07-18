@@ -6,6 +6,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SERVER</title>
+    <!-- <script src="./node_modules/react/index.js"></script>
+    <script src="./node_modules/react-dom/index.js"></script> -->
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+    </script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- <style src="./node_modules/sweetalert2/src/sweetalert2.scss"></style> -->
+    <!-- <script src="./node_modules/reactjs/reactjs-md-editor/lib/reactjs-md-editor.js"></script> -->
 </head>
 <body>
     <!-- * header cua trang web -->
@@ -48,9 +56,11 @@
             <section class="chart">
                 <div class="request">
                     <h2>REQUEST CHART</h2>
+                    <canvas id="requestChart" style="width:100%;"></canvas>
                 </div>
                 <div class="running">
                     <h2>RUNNING CHART</h2>
+                    <canvas id="runningChart" style="width:100%;"></canvas>
                 </div>
                 <div class="devices">
                     <h2>DEVICES MANAGER</h2>
@@ -162,42 +172,44 @@
 
                 <div class="tab-device" id="info">
                     <section id="edit-info" class="edit-info">
+                        
                         <section class="serial-robo" id="serial-robo">
                             <h2>SERIAL:</h2>
                             <h3></h3>
                         </section>
-                        <section class="info-robo" id="name-robo">
-                            <h2>Robot Name:</h2>
-                            <textarea id="edit-name" rows="1" cols="15"></textarea>
-                        </section>
-                        <section class="info-robo" id="home-robo">
-                            <h2>Home location:</h2>
-                            <textarea id="edit-home" rows="1" cols="15"></textarea>
-                        </section>
-                        <section class="info-robo" id="ip-server-robo">
-                            <h2>IP SERVER:</h2>
-                            <textarea id="edit-ip-server" rows="1" cols="15"></textarea>
-                        </section>
-                        <section class="info-robo" id="port-server-robo">
-                            <h2>PORT SERVER:</h2>
-                            <textarea id="edit-port" rows="1" cols="15"></textarea>
-                        </section>
-                        <section class="info-robo" id="SSID_ST-robo">
-                            <h2>SSID_ST:</h2>
-                            <textarea id="edit-SSID-ST" rows="1" cols="15"></textarea>
-                        </section>
-                        <section class="info-robo" id="PASS_ST-robo">
-                            <h2>PASS_ST</h2>
-                            <textarea id="edit-PASS-ST" rows="1" cols="15"></textarea>
-                        </section>
-                        <section class="info-robo" id="SSID_AP-robo">
-                            <h2>SSID_AP</h2>
-                            <textarea id="edit-SSID-AP" rows="1" cols="15"></textarea>
-                        </section>
-                        <section class="info-robo" id="PASS_AP-robo">
-                            <h2>PASS_AP</h2>
-                            <textarea id="edit-PASS-AP" rows="1" cols="15"></textarea>
-                        </section>
+                            <section class="info-robo" id="name-robo">
+                                <h2>Robot Name:</h2>
+                                <textarea id="edit-name" rows="1" cols="15"></textarea>
+                            </section>
+                            <section class="info-robo" id="home-robo">
+                                <h2>Home location:</h2>
+                                <textarea id="edit-home" rows="1" cols="15"></textarea>
+                            </section>
+                            <section class="info-robo" id="ip-server-robo">
+                                <h2>IP SERVER:</h2>
+                                <textarea id="edit-ip-server" rows="1" cols="15"></textarea>
+                            </section>
+                            <section class="info-robo" id="port-server-robo">
+                                <h2>PORT SERVER:</h2>
+                                <textarea id="edit-port" rows="1" cols="15"></textarea>
+                            </section>
+                            <section class="info-robo" id="SSID_ST-robo">
+                                <h2>SSID_ST:</h2>
+                                <textarea id="edit-SSID-ST" rows="1" cols="15"></textarea>
+                            </section>
+                            <section class="info-robo" id="PASS_ST-robo">
+                                <h2>PASS_ST</h2>
+                                <textarea id="edit-PASS-ST" rows="1" cols="15"></textarea>
+                            </section>
+                            <section class="info-robo" id="SSID_AP-robo">
+                                <h2>SSID_AP</h2>
+                                <textarea id="edit-SSID-AP" rows="1" cols="15"></textarea>
+                            </section>
+                            <section class="info-robo" id="PASS_AP-robo">
+                                <h2>PASS_AP</h2>
+                                <textarea id="edit-PASS-AP" rows="1" cols="15"></textarea>
+                            </section>
+                        
                         <section class="save-info-robo" id="save-info-robo">
                             <button id="save-info" onclick="saveEditInfo(event)">SAVE</button>
                         </section>
@@ -309,12 +321,16 @@
                 
                 <section class="layout-location">
                     <section class="add-location">
-                        <div class="menu-control" id="menu-add">
-                            <button class="toggleBtn" >Seclect Decive</button>
-                            <ul class="menuOptions">
-                            </ul>
+                        <div class="menu-add" id="menuAdd">
+                            <!-- <button class="toggleBtn" >Seclect Decive</button> -->
+                            <!-- <ul class="menuOptions"> -->
+                            <!-- </ul> -->
+                            <h3 style="margin-bottom: 1vh; color: black;">Auto Add Location</h3>
+                            <h4>Chosse the Robot</h4>
+                            <select name="chosse the robot" id="addLocation">
+                            </select>
                           </div>
-                          <button class="run-add">Auto add</button>
+                          <button class="run-add" onclick="autoAddLocation()">Auto add</button>
                     </section>
     
                     <section class="add-location">
@@ -335,27 +351,30 @@
                 
                     
             </section>
-
             <section class="tab-request" id="show-request-tab">
                 <section class="layout-location">
                     <section class="add-location">
-                        <h2>Web-app chart</h2>
+                        <h3>Web App Chart</h3>
+                        <canvas id="webAppChart" style="width:100%;"></canvas>
                     </section>
     
                     <section class="add-location">
                         <h2>Server chart</h2>
+                        <section id="chart-order"></section>
+                     
                     </section>
                 </section>
                 
                 <section class="layout-location">
                     <h2>Order request</h2>
-                    <table class="list-table" >
+                    <table class="list-table" id="orderTable">
                     <thead>
                         <tr>
                         <th>STT</th>
                         <th>Order No</th>
-                        <th>Serial</th>
-                        <th>CMD</th>
+                        <th>Table_qr</th>
+                        <th>Created at</th>
+                        <th>Updated at</th>
                         <th>Status</th>
                         </tr>
                     </thead>
@@ -392,9 +411,6 @@
 
     </footer>
     <script src="control.js"></script>
-    <!-- <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
-    <!-- <script src="sweetalert2.min.js"></script> -->
-<!-- <link rel="stylesheet" href="sweetalert2.min.css"> -->
-    <script type="module" src="./node_modules/sweetalert2/dist/sweetalert2.all.js"></script>
+    
 </body>
 </html>

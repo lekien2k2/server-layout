@@ -6,7 +6,7 @@
 html{
     font-family: 'Lato', sans-serif;
     font-size: 20px;
-    color: #5a5a5a;
+    color: #585858;
     background-color: rgb(255, 255, 255);
     text-rendering: optimizeLegibility;
     /* mac dinh la 16px */
@@ -35,13 +35,13 @@ body{
 =============================================== */
 header {
     max-width: 100%;
-    height: 10%;
+    height: 10vh;
     /* background-color: bisque; */
     font-size: 20px;
     color:rgb(0, 0, 0);
     display: flex;
     flex-direction: row wrap;
-    border: 1px rgb(174, 0, 255) solid ;
+    border: 1px rgb(13, 0, 255) solid ;
     align-items: center;
 }
 
@@ -76,8 +76,8 @@ header {
 }
 .menu{
     display: flex;
-    width: 25%;
-    height: 100%;
+    width: 15em;
+    height: 81vh;
     margin-right : 1em;
     /* background-color: antiquewhite; */
     border: 1px rgb(208, 204, 204) solid ;
@@ -88,8 +88,8 @@ header {
 }
 .name-menu{
     display: flex;
-    width:  50%;
-    height: 7%;
+    width:  10em;
+    height: 5vh;
     border: 1px rgb(208, 204, 204) solid ;
     margin: 0.5em;
     font-size: 0.5em;
@@ -99,16 +99,16 @@ header {
     cursor: pointer;
 }
 .name-menu:hover{
-    border: 2px solid blueviolet;
-    color: blueviolet;
+    border: 2px solid rgb(110, 0, 255);
+    color: rgb(110, 0, 255);
     font-weight: bolder;
-    font-size: 0.6em;
+    font-size: 0.55em;
 }
 .name-menu.active {
-    border: 2px solid blueviolet;
-    color: blueviolet;
+    border: 2px solid rgb(110, 0, 255);
+    color: rgb(110, 0, 255);
     font-weight: bolder;
-    font-size: 0.6em;
+    font-size: 0.55em;
   }
 
 .main{
@@ -137,6 +137,7 @@ header {
     border: 1px rgb(208, 204, 204) solid ;
     margin-right: 0.5em;
     flex-basis: 30%;
+    flex-direction: column;
 }
 .chart .running{
     display: flex;
@@ -144,6 +145,7 @@ header {
     border: 1px rgb(208, 204, 204) solid ;
     margin-right: 0.5em;
     flex-basis: 30%;
+    flex-direction: column;
 }
 .chart .devices{
     display: flex;
@@ -163,7 +165,7 @@ header {
     display: block;
     margin: 0 auto;
     font-size: 0.7em;
-    width: 90%;
+    width: 95%;
     border-collapse: collapse;
     height: 100%;
     overflow: auto;
@@ -180,7 +182,7 @@ header {
     padding: 5px;
     height: 5vh;
     width: 5em;
-    max-width: 5em;
+    max-width: 6em;
     word-wrap: break-word;
   }
   
@@ -291,6 +293,7 @@ header {
     font-size: 0.7em;
     cursor: pointer;
     font-weight: bolder;
+    border-radius: 3px;
 
 }
 
@@ -300,7 +303,7 @@ header {
 
 .ele-taskbar.active{
     color: white;
-    background-color: blueviolet;
+    background-color: rgb(120, 0, 255);
 }
 .tab-device{
     display: none;
@@ -345,8 +348,8 @@ header {
     /* height: 4vh; */
     margin: 0 auto;
     background-color: rgb(255, 255, 255);
-    border: 2px solid purple;
-    color: purple;
+    border: 2px solid rgb(140, 0, 255);
+    color: rgb(140, 0, 255);
     font-size: 1em;
     font-weight: 600;
     cursor: pointer;
@@ -435,6 +438,7 @@ header {
     display: flex;
     flex-direction: row wrap;   
     flex-wrap: wrap;
+    overflow: auto;
 }
 
 .serial-robo{
@@ -555,7 +559,7 @@ header {
   display: flex;
   border: 1px solid #f3edf3;
   /* background-color: #f3edf3; */
-  width: 51em;
+  width: 100%;
   height: 10vh;
   overflow: auto;
 }
@@ -586,6 +590,7 @@ header {
   max-width: 8em;
   max-height: 6vh;
   margin: 0 auto;
+  flex-direction: column;
 }
 
 .menuOptions {
@@ -595,6 +600,18 @@ header {
 .menuOptions.show {
   display: block;
   
+}
+
+.menuOptions li{
+  display: flex;
+  cursor: pointer;
+  border: 1px solid rgb(208, 204, 204);
+  font-size: 1em;
+  background-color: #f9f9f9;
+  color: rgb(0, 0, 0);
+  margin: 0.5vh 0em;
+  word-wrap: break-word;
+  width: 100%;
 }
 
 .remote-robo{
@@ -629,10 +646,15 @@ header {
   display: block;
   /* flex-direction: row; */
   margin: 1em;
+  margin-left: 0em;
   /* background-color: #5a5a5a; */
   justify-content: center;
   align-items: center;
+  background-color: white;
+  border: none white;
 }
+
+
 #menuGoto{
   display: none;
   position: absolute;
@@ -681,6 +703,7 @@ header {
   font-size: 0.7em;
   cursor: pointer;
   font-weight: bolder;
+  border-radius: 3px;
 }
 
 .ele-taskbar-request:hover{
@@ -689,14 +712,16 @@ header {
 
 .ele-taskbar-request.active{
   color: white;
-  background-color: blueviolet;
+  background-color: rgb(120, 0, 255);
 }
 .tab-request{
   display: none;
   flex-direction: row;
   height: 100%;
-  border: 1px solid rgb(208, 204, 204);
+  width: 100%;
+  /* border: 1px solid rgb(208, 204, 204); */
   margin-top: 0.5em;
+  flex-grow: 1;
 }
 
 .layout-location{
@@ -708,12 +733,13 @@ header {
   /* border: #5a5a5a solid; */
   /* margin: 1em; */
   flex-grow: 1;
+  /* overflow: auto; */
 }
 
 .add-location{
   display: flex;
   flex-direction: column;
-  margin: 1vh 1em;
+  margin: 1vh 0em;
   border:  1px solid rgb(208, 204, 204);
   width: 15em;
   justify-content: center;
@@ -727,7 +753,6 @@ header {
 }
 
 .layout-location .list-table{
-
   margin: 0em auto;
   margin-top: 0em;
   border-collapse: collapse;
@@ -765,13 +790,6 @@ background-color: #f5f5f5;
   cursor: pointer;
 }
 
-#list-location .empty{
-  color: rgb(1, 255, 26);
-}
-#list-location .full{
-  color: rgb(0, 0, 0);
-}
-
 
 .enter button{
   font-size: 1em;
@@ -784,7 +802,7 @@ background-color: #f5f5f5;
   font-size: 1em;
   /* margin-top: 1em; */
   /* margin-bottom: 1em; */
-  cursor: pointer;
+  /* cursor: pointer; */
 }
 .enter select{
   font-size: 1em;
@@ -792,72 +810,34 @@ background-color: #f5f5f5;
   /* margin-bottom: 1em; */
   cursor: pointer;
 }
-.dialog {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #fff;
-  padding: 20px;
-  padding-bottom: 10px;
-  height: 300px;
-  width: 500px;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+.menu-add select{
   font-size: 1em;
+  /* margin-top: 1em; */
+  /* margin-bottom: 1em; */
+  cursor: pointer;
+  width: 84%;
+}
+.menu-add option{
+  font-size: 1em;
+  /* margin-top: 1em; */
+  /* margin-bottom: 1em; */
+  cursor: pointer;
 }
 
-.dialog h2 {
-  margin: 0 auto;
-  font-size: 2em;
-}
-
-/* .dialog label {
-  display: block;
-  margin-bottom: 10px;
+/* .menu-add{
+  display: flex;
+  flex-direction: column;
+  margin: 1vh 0em;
+  border:  1px solid rgb(208, 204, 204);
+  width: 15em;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  border-radius: 3px;
 } */
+/* *table order */
 
-.dialog input[type="text"] {
-  width: 100%;
-  padding: 5px;
-  margin: 0.5em 0;
-  font-size: 1em;
+#orderTable td{
+  font-size: 0.8em;
+  word-wrap: break-word;
 }
-
-.dialog button {
-  margin-right: 10px;
-}
-
-.dialog .actions {
-  /* margin-bottom: 0.5em;
-  right: 0.5em; */
-  margin-top: 0.6em;
-  display: flex;
-  justify-content: flex-end;
-}
-
-.actions button {
-  /* background-color: #fff; */
-  border: 1px solid #ccc;
-  padding: 5px 10px;
-  cursor: pointer;
-}
-.actions button.save{
-  background-color: rgb(72, 255, 72);
-  color: #ffffff;
-  font-size: 1em;
-  font-weight: bold;
-}
-.dialog button.delete{
-  display: flex;
-  /* margin-bottom: 0.5em; */
-  background-color: rgb(255, 83, 83);
-  margin-right: 10em;
-  color: #ffffff;
-  font-size: 1em;
-  font-weight: bold;
-  cursor: pointer;
-  border: 1px solid #ccc;
-  padding: 5px 10px;
-}
-
