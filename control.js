@@ -10,9 +10,9 @@
 //* websockets
 // md.render('# your markdown string');
 var client_id = Date.now()
-var websocket = new WebSocket(`ws://192.168.1.189:8000/ws/browser/${client_id}`);
+var websocket = new WebSocket(`ws://192.168.1.178:8000/ws/browser/${client_id}`);
 var data_update_devices
-var ip = "http://192.168.1.189" 
+var ip = "http://192.168.1.178" 
 
 // setInterval(function() {
 //   sendMessage();
@@ -22,14 +22,14 @@ websocket.onmessage = function(event) {
     msg = JSON.parse(event.data)
     console.log(msg)
     switch (msg['type']) {
-        case 'device_update':
+        case 'server.deviceUpdate':
             console.log(msg)
             clearDataDevices()
             processListDevice(msg["data"]["robots"]);
             data_update_devices = msg["data"]["robots"];
             break;
 
-        case 'console_update':
+        case 'server.consoleUpdate':
             loadMessage(msg["data"])
             break;
             
@@ -98,11 +98,11 @@ function loadMessage(data){
     row.appendChild(cell1);
 
     const cell2 = document.createElement('td');
-    cell2.textContent = data["name"];
+    cell2.textContent = data["name"] + "(" + data["serial"] + ":" + data["port"] + ")";
     row.appendChild(cell2);
 
     const cell3 = document.createElement('td');
-    cell3.textContent = data["message"];
+    cell3.textContent = data["status"];
     row.appendChild(cell3);
 
     // Thêm hàng vào tbody
@@ -594,7 +594,7 @@ commandControl.forEach(item=>{
     if(serialRobo == item["serial"]){
       console.log("SUBMIT DONE")
       var json = {
-        "type":"browser_command",
+        "type":"browser.command",
         "data":{
           "serial":serialRobo,
           "command":command
@@ -671,12 +671,13 @@ Swal.fire("Add table success")
 // *get api location
 setInterval(function() {
 fetch(ip+':8002/api/v1/tables', {
-  method: 'GET',
+  method: 'POST',
   headers: {
     'Content-Type': 'application/json'
-  }
+  },
+  body:JSON.stringify({isEmpty: false})
 })
-  .then(response => response.json())
+  .then(response => response.json())  
   .then(data => {
     const menuGoto = document.querySelector('#menuGoto ul');
   // Xóa các hàng hiện có trong tbody
@@ -948,10 +949,11 @@ new Chart("webAppChart", {
   options: {
     legend: {display: false},
     scales: {
-      yAxes: [{ticks: {min: 6, max:16}}],
+      yAxes: [{ticks: {min: 0, max:16}}],
     }
   }
 });
+
 new Chart("runningChart", {
   type: "line",
   data: {
@@ -971,6 +973,7 @@ new Chart("runningChart", {
     }
   }
 });
+
 new Chart("requestChart", {
   type: "line",
   data: {
