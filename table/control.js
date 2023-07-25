@@ -1,5 +1,5 @@
 setInterval(function() {
-fetch('http://192.168.1.178:8002/api/v1/tables/', {
+fetch('http://192.168.1.189:8002/api/v1/tables/', {
   method: 'GET',
   headers: {
     'Content-Type': 'application/json'
@@ -62,7 +62,7 @@ fetch('http://192.168.1.178:8002/api/v1/tables/', {
               const json = {
                 "is_empty": is_empty
               };
-              fetch(`http://192.168.1.178:8002/api/v1/table/${item["qr_code"]}`, {
+              fetch(`http://192.168.1.189:8002/api/v1/table/${item["qr_code"]}`, {
                 method: 'PUT',
                 headers: {
                   'Content-Type': 'application/json'
