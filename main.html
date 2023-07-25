@@ -12,6 +12,7 @@
         src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
     </script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://css.gg/css" rel="stylesheet" />
     <!-- <style src="./node_modules/sweetalert2/src/sweetalert2.scss"></style> -->
     <!-- <script src="./node_modules/reactjs/reactjs-md-editor/lib/reactjs-md-editor.js"></script> -->
 </head>
@@ -55,15 +56,15 @@
         <div class="main" id="dashboard">
             <section class="chart">
                 <div class="request">
-                    <h2>REQUEST CHART</h2>
+                    <h2 style="margin-top: 0.5vh;margin-left: 0.5em;">REQUEST CHART</h2>
                     <canvas id="requestChart" style="width:100%;"></canvas>
                 </div>
                 <div class="running">
-                    <h2>RUNNING CHART</h2>
+                    <h2 style="margin-top: 0.5vh;margin-left: 0.5em;">RUNNING CHART</h2>
                     <canvas id="runningChart" style="width:100%;"></canvas>
                 </div>
                 <div class="devices">
-                    <h2>DEVICES MANAGER</h2>
+                    <h2 style="margin-top: 0.5vh;margin-left: 0.5em;">DEVICES MANAGER</h2>
                     <table id="devices-manager" class="list-table">
                       <thead>
                         <tr>
@@ -169,7 +170,7 @@
                     
                 </div>
 
-                
+
                 <div class="tab-device" id="info">
                     <section id="edit-info" class="edit-info">
                         
@@ -244,10 +245,9 @@
                                 <section class="remote-robo" id="goto">
                                     <h2>GOTO:</h2>
                                     <textarea id="commandGoto" rows="1" cols="15" onkeydown="handleEnterKey(event)"></textarea>
-                                    <button id="selectGoto" class="select-Goto" style="background-image: url(./img/dots.png); background-size: cover;background-position: center;width: 1em; height: 5vh;"></button>
+                                    <i class="gg-chevron-down-r" id="selectGoto" style="margin-left: 0.5em;cursor: pointer;"></i>
                                     <section id="menuGoto"  class="menuGoto">
-                        
-                                        <ul  class="menuGoto"></ul>
+                                        <ul></ul>
                                     </section>
                                 </section>
                                 <!-- <section class="remote-robo" id="clear">
@@ -284,7 +284,7 @@
                         </section>
     
                         <div class="menu-control" id="menu-control">
-                            <button class="toggleBtn" >Devices Online</button>
+                            <h2>Devices Online</h2>
                             <ul class="menuOptions">
                             </ul>
                           </div>
@@ -361,9 +361,8 @@
                     </section>
     
                     <section class="add-location">
-                        <h2>Server chart</h2>
-                        <section id="chart-order"></section>
-                     
+                        <h3>Server chart</h3>
+                        <canvas id="serverChart" style="width:100%;"></canvas>
                     </section>
                 </section>
                 

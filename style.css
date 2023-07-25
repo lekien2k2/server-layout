@@ -555,7 +555,6 @@ header {
     flex-direction: column;   
     flex-grow: 1;
     /* flex-wrap: wrap; */
-    margin-right: 1em;
 }
 .layout-command{
   margin-top: 7vh;
@@ -590,13 +589,38 @@ header {
 .menu-control {
   display: flex;
   position: relative;
-  max-width: 8em;
-  max-height: 6vh;
-  margin: 0 auto;
+  width: 20em;
+  margin-left: 1em;
   flex-direction: column;
+  border: 1px solid rgb(208, 204, 204);
+  height: 70vh;
+}
+.menu-control h2 {
+  display: flex;
+  font-size: 1em;
+}
+.menuOptions {
+  display: flex;
+  margin-left: 1em;
+  /* background-color: #f9f9f9; */
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  right: 0;
+  flex-direction: column;
+  overflow: auto;
 }
 
-.menuOptions {
+.menuOptions li {
+  margin: 0.5vh 1vh;
+  display: flex;
+  padding: 10px;
+  cursor: pointer;
+  border: 1px solid rgb(208, 204, 204);
+  background-color: #f9f9f9;
+  
+}
+/* .menuOptions {
   display: none;
 }
 
@@ -615,7 +639,7 @@ header {
   margin: 0.5vh 0em;
   word-wrap: break-word;
   width: 100%;
-}
+} */
 
 .remote-robo{
   display: flex;
@@ -667,7 +691,9 @@ header {
   justify-content: center;
   align-items: center;
 }
-
+#goto button{
+  border: none;
+}
 .menuGoto{
   /* display: none; */
   position: absolute;
@@ -676,6 +702,18 @@ header {
   /* background-color: #353333; */
   justify-content: center;
   align-items: center;
+  max-height: 10vh;
+}
+.menuGoto ul{
+  /* display: none; */
+  position: absolute;
+  flex-direction: column;
+  margin: 1em;
+  /* background-color: #353333; */
+  justify-content: center;
+  align-items: center;
+  max-height: 20vh;
+  overflow: auto;
 }
 
 .menuGoto li{

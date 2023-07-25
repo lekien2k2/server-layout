@@ -10,9 +10,9 @@
 //* websockets
 // md.render('# your markdown string');
 var client_id = Date.now()
-var websocket = new WebSocket(`ws://192.168.1.178:8000/ws/browser/${client_id}`);
+var websocket = new WebSocket(`ws://192.168.1.189:80/ws/browser/${client_id}`);
 var data_update_devices
-var ip = "http://192.168.1.178" 
+var ip = "http://192.168.1.189" 
 
 // setInterval(function() {
 //   sendMessage();
@@ -160,7 +160,7 @@ function processListDevice(data) {
 
 // * get devices
 setInterval(function() {
-fetch(ip +':8001/api/v1/robots', {
+fetch(ip +'/api/v1/robots', {
   method: 'GET',
   headers: {
     'Content-Type': 'application/json'
@@ -228,7 +228,8 @@ fetch(ip +':8001/api/v1/robots', {
           confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
           if (result.isConfirmed) {
-            fetch(ip+`:8001/api/v1/robot/${item["serial"]}`, {
+            console.log(ip+`/api/v1/robots/${item["serial"]}`)
+            fetch(ip+`/api/v1/robots/${item["serial"]}`, {
             method: 'DELETE',
             headers: {
               'Content-Type': 'application/json'
@@ -236,29 +237,34 @@ fetch(ip +':8001/api/v1/robots', {
           })
             .then(response => {
               // Xử lý kết quả từ yêu cầu DELETE
-              if (response.ok) {
+              if (response.status === 204) {
                 console.log(`Deleted robot with serial: ${item["serial"]}`);
                 // Xóa hàng khỏi bảng
-                tbody.removeChild(row);
+                Swal.fire(
+                  'Deleted!',
+                  'Your file has been deleted.',
+                  'success'
+                )
               } else {
                 console.log(`Failed to delete robot with serial: ${item["serial"]}`);
+                return response.json().then(errorData => {
+                  console.log(JSON.stringify(errorData["detail"]))
+                  throw new Error(`${JSON.stringify(errorData["detail"])}`);
+                });
               }
             })
             .catch(error => {
               // Xử lý lỗi trong trường hợp không thể gửi yêu cầu DELETE
+              
               console.log(`Error deleting robot with serial: ${item["serial"]}`, error);
+              swal.fire({
+                title:'Error!',
+                text: `Failed to delete robot ${item["serial"]}: ${error}`,
+                icon: 'error',
             });
-            Swal.fire(
-              'Deleted!',
-              'Your file has been deleted.',
-              'success'
-            )
-        }
-           
-            
+            });
           }
-        )
-          
+        });
       });
       cell6.appendChild(deleteButton);
       row.appendChild(cell6);
@@ -332,7 +338,7 @@ function addRobo(event) {
       "serial": input.value
   }
   if(input.value != ""){
-  fetch(ip+':8001/api/v1/robot', {
+  fetch(ip+'/api/v1/robots', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json'
@@ -344,11 +350,20 @@ function addRobo(event) {
       console.log('ADD DONE');
       Swal.fire("Add robot success")
     } else {
+      return response.json().then(errorData => {
+        console.log(JSON.stringify(errorData["detail"]))
+        throw new Error(`${JSON.stringify(errorData["detail"])}`);
+      });
       throw new Error('Error: ' + response.status);
       // Swal.fire("Add robot fail")
     }
   })
   .catch(error => {
+    Swal.fire({
+      title:'Error!',
+      text: `Failed to add robot ${json["serial"]}: ${error}`,
+      icon: 'error',
+  });
     // Xử lý lỗi trong trường hợp không thể truy cập API
     console.log(error);
   });
@@ -410,21 +425,7 @@ window.onload = function() {
 
 
 // *MENU of layout remote
-const toggleBtn = document.querySelector('#menu-control .toggleBtn');
 const menuOption = document.querySelector('#menu-control .menuOptions');
-
-
-  toggleBtn.addEventListener('click', function() {
-    console.log("co goi", menuOption)
-    menuOption.style.display = menuOption.style.display === 'none' ? 'flex' : 'none';
-  });
-
-  document.addEventListener('mousedown', function(event) {
-    const target = event.target;
-    if (!target.closest('.toggleBtn') && !target.closest('.menuOptions')) {
-      menuOption.style.display = 'none';
-    }
-  });
 
   menuOption.addEventListener('click', function(event) {
     
@@ -432,8 +433,6 @@ const menuOption = document.querySelector('#menu-control .menuOptions');
     const option = target.textContent;
     if (option) {
       controlRobot(option);
-      menuOption.style.display = 'none';
-
     }
   });
 
@@ -455,7 +454,7 @@ function editInfoRobot(option) {
   console.log('Option selected:', option);
   const serial = document.querySelector('#serial-robo h3');
   serial.textContent = option;
-  fetch (ip+':8001/api/v1/robot/'+option)
+  fetch (ip+'/api/v1/robots/'+option)
 
     .then(response => response.json())
     .then(data => {
@@ -506,7 +505,7 @@ function saveEditInfo(event) {
   };
   console.log(json);
 
-  fetch(ip+':8001/api/v1/robot/' + serialRobo, {
+  fetch(ip+'/api/v1/robots/' + serialRobo, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json'
@@ -517,13 +516,12 @@ function saveEditInfo(event) {
       if(response.ok) {
         Swal.fire(`Updated robot with serial: ${serialRobo}`);
       } else {  
-        Swal.fire({
-          title:'Warning!',
-          text: `Failed to update robot ${editInfo["name"]}: ${response.status}`,
-          icon: 'warning',
-      });
-        throw new Error('Error: ' + response.status);
+        return response.json().then(errorData => {
+          console.log(JSON.stringify(errorData["detail"]))
+          throw new Error(`${JSON.stringify(errorData["detail"])}`);
+        });
       }
+      throw new Error('Error: ' + response.status);
     })
     .catch(error => {
       // Xử lý lỗi trong trường hợp không thể truy cập API
@@ -589,7 +587,7 @@ commandControl.forEach(item=>{
     command = command  + item.textContent;
   }
 });
-
+if (command != "") {
   data_update_devices.forEach(item=>{
     if(serialRobo == item["serial"]){
       console.log("SUBMIT DONE")
@@ -605,6 +603,7 @@ commandControl.forEach(item=>{
       document.getElementById('command').textContent = "";
     }
   });
+}
 }
 
 function handleEnterKey(event) {
@@ -643,7 +642,7 @@ function addLocation(event) {
       "qr_code": type.value,
   }
   if(input.value != ""){
-  fetch(ip+':8002/api/v1/table', {
+  fetch(ip+'/api/v1/tables', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json'
@@ -653,29 +652,39 @@ function addLocation(event) {
   .then(response => {
     if (response.status == 200) {
       console.log('ADD DONE');
+      Swal.fire("Add table success")
     } else {
-      throw new Error('Error: ' + response.status);
+      return response.json().then(errorData => {
+        console.log(JSON.stringify(errorData["detail"]))
+        throw new Error(`${JSON.stringify(errorData["detail"])}`);
+      });
+      
     }
-  })
+    }
+  )
   .catch(error => {
     // Xử lý lỗi trong trường hợp không thể truy cập API
     console.log(error);
+    Swal.fire({
+      title:'Error!',
+      html: `Failed to add location: ${json["name"]} <br> ${error}`,
+      icon: 'error',
+  });
   });
   input.value = ''
   event.preventDefault()
 
 }
-Swal.fire("Add table success")
+
 
 }
 // *get api location
 setInterval(function() {
-fetch(ip+':8002/api/v1/tables', {
-  method: 'POST',
+fetch(ip+'/api/v1/tables', {
+  method: 'GET',
   headers: {
     'Content-Type': 'application/json'
-  },
-  body:JSON.stringify({isEmpty: false})
+  }
 })
   .then(response => response.json())  
   .then(data => {
@@ -744,7 +753,7 @@ fetch(ip+':8002/api/v1/tables', {
               "name": name,
               "qr_code": qr_code
             };
-            return fetch(ip+`:8002/api/v1/table/${item["qr_code"]}`, {
+            return fetch(ip+`/api/v1/tables/${item["qr_code"]}`, {
               method: 'PUT',
               headers: {
                 'Content-Type': 'application/json'
@@ -797,7 +806,7 @@ fetch(ip+':8002/api/v1/tables', {
               reverseButtons: true,
               focusCancel: true,
               preConfirm: () => {
-                  fetch(ip+`:8002/api/v1/table/${item["qr_code"]}`, {
+                  fetch(ip+`/api/v1/tables/${item["qr_code"]}`, {
                   method: 'DELETE',
                   headers: {
                     'Content-Type': 'application/json'
@@ -848,11 +857,11 @@ fetch(ip+':8002/api/v1/tables', {
 },1000);
 
 
-// *MENU of layout remote
+// *add Location Auto
 const optionAdd = document.getElementById('addLocation');
   function autoAddLocation(){
     var json = {
-      "type":"browser_command",
+      "type":"browser.command",
       "data":{
         "serial":optionAdd.value,
         "command":"addLocation"
@@ -866,7 +875,7 @@ const optionAdd = document.getElementById('addLocation');
 
 // * get api order
 setInterval(function() {
-  fetch(ip+':8003/api/v1/orders', {
+  fetch(ip+'/api/v1/orders', {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
@@ -932,28 +941,91 @@ setInterval(function() {
 // *chart order
 
 const xValues = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
-const yValues = [7,8,8,9,9,9,10,11,14,14,15,0,0];
-
-new Chart("webAppChart", {
-  type: "line",
-  data: {
-    labels: xValues,
-    datasets: [{
-      fill: false,
-      lineTension: 0,
-      backgroundColor: "rgba(0,0,255,1.0)",
-      borderColor: "rgba(0,0,255,0.1)",
-      data: yValues
-    }]
-  },
-  options: {
-    legend: {display: false},
-    scales: {
-      yAxes: [{ticks: {min: 0, max:16}}],
+fetch (ip+'/api/v1/orders/hourly',
+  {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
     }
   }
-});
+)
+  .then(response => response.json())
+  .then(data => {
+    console.log("asdasdasdasdadasdas")
+    console.log(data["data"])
+    const yValues = data["data"];
+    // remove data over now hour
+    var d = new Date();
+    var n = d.getHours();
+    console.log(n)
+    yValues.splice(n+1,24-n);
+    console.log(yValues)
+    new Chart("webAppChart", {
+      type: "line",
+      data: {
+        labels: xValues,
+        datasets: [{
+          fill: false,
+          lineTension: 0,
+          backgroundColor: "rgba(0,0,255,1.0)",
+          borderColor: "rgba(0,0,255,0.1)",
+          data: yValues
+        }]
+      },
+      options: {
+        legend: {display: false},
+        scales: {
+          yAxes: [{ticks: {min: 0, max: Math.max(...yValues)%2 ==0 ? Math.max(...yValues) + 2 : Math.max(...yValues) + 1  }}],
+        }
+      }
+    });
 
+    new Chart("requestChart", {
+      type: "line",
+      data: {
+        labels: xValues,
+        datasets: [{
+          fill: false,
+          lineTension: 0,
+          backgroundColor: "rgba(0,0,255,1.0)",
+          borderColor: "rgba(0,0,255,0.1)",
+          data: yValues
+        }]
+      },
+      options: {
+        legend: {display: false},
+        scales: {
+          yAxes: [{ticks: {min: 0, max: Math.max(...yValues)%2 ==0 ? Math.max(...yValues) + 2 : Math.max(...yValues) + 1  }}],
+        }
+      }
+    });
+
+  })
+  .catch(error => {
+    // Xử lý lỗi trong trường hợp không thể truy cập API
+    console.log(error);
+  });
+
+  // new Chart("webAppChart", {
+  //   type: "line",
+  //   data: {
+  //     labels: xValues,
+  //     datasets: [{
+  //       fill: false,
+  //       lineTension: 0,
+  //       backgroundColor: "rgba(0,0,255,1.0)",
+  //       borderColor: "rgba(0,0,255,0.1)",
+  //       data: yValues
+  //     }]
+  //   },
+  //   options: {
+  //     legend: {display: false},
+  //     scales: {
+  //       yAxes: [{ticks: {min: 0, max:16}}],
+  //     }
+  //   }
+  // });
+const yValues = [0,1,2,0,8,5,4,6,8,5,13,5,12];
 new Chart("runningChart", {
   type: "line",
   data: {
@@ -969,12 +1041,32 @@ new Chart("runningChart", {
   options: {
     legend: {display: false},
     scales: {
-      yAxes: [{ticks: {min: 6, max:16}}],
+      yAxes: [{ticks: {min: 0, max: Math.max(...yValues)%2 ==0 ? Math.max(...yValues) + 2 : Math.max(...yValues) + 1  }}],
     }
   }
 });
 
-new Chart("requestChart", {
+// new Chart("requestChart", {
+//   type: "line",
+//   data: {
+//     labels: xValues,
+//     datasets: [{
+//       fill: false,
+//       lineTension: 0,
+//       backgroundColor: "rgba(0,0,255,1.0)",
+//       borderColor: "rgba(0,0,255,0.1)",
+//       data: yValues
+//     }]
+//   },
+//   options: {
+//     legend: {display: false},
+//     scales: {
+//       yAxes: [{ticks: {min: 0, max:  Math.max(...yValues)%2 ==0 ? Math.max(...yValues) + 2 : Math.max(...yValues) + 1  }}],
+//     }
+//   }
+// });
+
+new Chart("serverChart", {
   type: "line",
   data: {
     labels: xValues,
@@ -989,7 +1081,7 @@ new Chart("requestChart", {
   options: {
     legend: {display: false},
     scales: {
-      yAxes: [{ticks: {min: 6, max:16}}],
+      yAxes: [{ticks: {min: 0, max:  Math.max(...yValues)%2 ==0 ? Math.max(...yValues) + 2 : Math.max(...yValues) + 1  }}],
     }
   }
 });
